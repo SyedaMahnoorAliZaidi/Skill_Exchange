@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Page } from "./types";
 import ScrollToTop from "./ScrollToTop";
 import Footer from "shared/Footer/Footer";
-import PageHome from "containers/PageHome/PageHome";
+
 import Page404 from "containers/Page404/Page404";
 import ListingStayPage from "containers/ListingStayPage/ListingStayPage";
 import ListingStayMapPage from "containers/ListingStayPage/ListingStayMapPage";
@@ -38,21 +38,20 @@ import PageAddListing10 from "containers/PageAddListing1/PageAddListing10";
 import PageHome2 from "containers/PageHome/PageHome2";
 import ListingRealEstateMapPage from "containers/ListingRealEstatePage/ListingRealEstateMapPage";
 import ListingRealEstatePage from "containers/ListingRealEstatePage/ListingRealEstatePage";
-import SiteHeader from "containers/SiteHeader";
+import SiteHeader from "containers/SiteHeader"
 import ListingFlightsPage from "containers/ListingFlightsPage/ListingFlightsPage";
 import FooterNav from "components/FooterNav";
 import useWindowSize from "hooks/useWindowResize";
-import PageHome3 from "containers/PageHome/PageHome3";
+import Header3 from "components/Header/Header3";
 import ListingStayDetailPage from "containers/ListingDetailPage/listing-stay-detail/ListingStayDetailPage";
 import ListingCarDetailPage from "containers/ListingDetailPage/listing-car-detail/ListingCarDetailPage";
 import ListingExperiencesDetailPage from "containers/ListingDetailPage/listing-experiences-detail/ListingExperiencesDetailPage";
 
 export const pages: Page[] = [
-  { path: "/", exact: true, component: PageHome },
-  { path: "/#", exact: true, component: PageHome },
-  { path: "/home-1-header-2", exact: true, component: PageHome },
+  
+  {path: "/" , component:SiteHeader},
   { path: "/home-2", component: PageHome2 },
-  { path: "/home-3", component: PageHome3 },
+  
   //
   { path: "/listing-stay", component: ListingStayPage },
   { path: "/listing-stay-map", component: ListingStayMapPage },
@@ -120,7 +119,7 @@ const MyRoutes = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <SiteHeader />
+      <Header3/>
 
       <Routes>
         {pages.map(({ component, path }) => {
@@ -128,6 +127,10 @@ const MyRoutes = () => {
           return <Route key={path} element={<Component />} path={path} />;
         })}
         <Route element={<Page404 />} />
+{/* { path: "/home-1-header-2", exact: true, component: PageHome },
+  { path: "/home-2", component: PageHome2 },
+  { path: "/", component: PageHome3 }, */}
+{/* <Route key= "/home-1-header-2" element= {<PageHome/>}  path={"/home-1-header-2"} /> */}
       </Routes>
 
       {WIN_WIDTH < 768 && <FooterNav />}
