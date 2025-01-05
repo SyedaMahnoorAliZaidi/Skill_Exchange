@@ -10,6 +10,7 @@ import SectionHero2 from "components/SectionHero2/SectionHero2";
 //
 import logo1 from "images/logos/nomal/1.png";
 import logo1Dark from "images/logos/dark/1.png";
+import Header3 from "components/Header/Header3";
 //
 import logo2 from "images/logos/nomal/2.png";
 import logo2Dark from "images/logos/dark/2.png";
@@ -32,7 +33,7 @@ import HIW3imgDark from "images/HIW2-3-dark.png";
 import rightImgPng from "images/our-features-2.png";
 
 import SectionGridFeatureProperty from "./SectionGridFeatureProperty";
-import SectionDowloadApp from "./SectionDowloadApp";
+import SectionDowloadApp from "./ExpertsaclickawayUI";
 
 const DEMO_CATS_2: TaxonomyType[] = [
   {
@@ -94,6 +95,8 @@ function PageHome2() {
   }, []);
 
   return (
+    <>
+    
     <div className="nc-PageHome2 relative overflow-hidden">
       {/* GLASSMOPHIN */}
       {/* <BgGlassmorphism /> */}
@@ -194,7 +197,9 @@ function PageHome2() {
         <SectionSubscribe2 />
       </div>
     </div>
+    </>
   );
 }
+
 
 export default PageHome2;
