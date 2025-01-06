@@ -1,6 +1,7 @@
 import Heading from "components/Heading/Heading";
 import React from "react";
 import NcImage from "shared/NcImage/NcImage";
+import Mahnoor from "images/founders/Mahnoor.jpg";
 
 export interface People {
   id: string;
@@ -12,29 +13,29 @@ export interface People {
 const FOUNDER_DEMO: People[] = [
   {
     id: "1",
-    name: `Niamh O'Shea`,
+    name: `Syeda Mahnoor Ali Zaidi`,
     job: "Co-founder and Chief Executive",
     avatar:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+      Mahnoor,
   },
   {
     id: "4",
-    name: `Danien Jame`,
+    name: `Amna Ateef`,
     job: "Co-founder and Chief Executive",
     avatar:
       "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
   },
   {
     id: "3",
-    name: `Orla Dwyer`,
-    job: "Co-founder, Chairman",
+    name: `Rida Fatima`,
+    job: "Co-founder and Chief Executive",
     avatar:
       "https://images.unsplash.com/photo-1560365163-3e8d64e762ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
   },
   {
     id: "2",
-    name: `Dara Frazier`,
-    job: "Co-Founder, Chief Strategy Officer",
+    name: `Alishba kamran`,
+    job: "Co-founder and Chief Executive",
     avatar:
       "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
   },
@@ -44,8 +45,7 @@ const SectionFounder = () => {
   return (
     <div className="nc-SectionFounder relative">
       <Heading
-        desc="We’re impartial and independent, and every day we create distinctive,
-          world-class programmes and content"
+        desc="We are a team of passionate university students with a vision to bridge the gap between skilled professionals and local customers"
       >
         ⛱ Founder
       </Heading>
