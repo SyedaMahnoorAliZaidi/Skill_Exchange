@@ -2,6 +2,7 @@ import Heading from "components/Heading/Heading";
 import React from "react";
 import NcImage from "shared/NcImage/NcImage";
 import Mahnoor from "images/founders/Mahnoor.jpg";
+import Amna from "images/founders/Amna.jpg";
 
 export interface People {
   id: string;
@@ -23,7 +24,7 @@ const FOUNDER_DEMO: People[] = [
     name: `Amna Ateef`,
     job: "Co-founder and Chief Executive",
     avatar:
-      "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+      Amna,
   },
   {
     id: "3",
@@ -34,7 +35,7 @@ const FOUNDER_DEMO: People[] = [
   },
   {
     id: "2",
-    name: `Alishba kamran`,
+    name: `Alishba Kamran`,
     job: "Co-founder and Chief Executive",
     avatar:
       "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
