@@ -26,9 +26,14 @@ export interface PageSignUpProps {
 const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
 
   const [showAdditionalFields, setShowAdditionalFields] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<string | null>(null);
     const handleContinueClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       setShowAdditionalFields(true);
+  };
+
+  const handleRoleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setSelectedRole(e.target.value);
   };
 
   return (
@@ -65,11 +70,23 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
               </span>
               <div className="mt-1">
                 <label className="inline-flex items-center">
-                  <input type="radio" name="role" value="user" className="form-radio" />
+                  <input
+                    type="radio"
+                    name="role"
+                    value="user"
+                    className="form-radio"
+                    onChange={handleRoleChange}
+                  />
                   <span className="ml-2">User</span>
                 </label>
                 <label className="inline-flex items-center ml-6">
-                  <input type="radio" name="role" value="expert" className="form-radio" />
+                  <input
+                    type="radio"
+                    name="role"
+                    value="expert"
+                    className="form-radio"
+                    onChange={handleRoleChange}
+                  />
                   <span className="ml-2">Expert</span>
                 </label>
               </div>
@@ -81,7 +98,7 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
           </ButtonPrimary>
           </form>
 
-          {showAdditionalFields && (
+          {showAdditionalFields && selectedRole === "user" && (
             <form className="grid grid-cols-1 gap-6 mt-6" action="#" method="post">
               <label className="block">
                 <span className="text-neutral-800 dark:text-neutral-200">
@@ -123,6 +140,70 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
             </form>
           )}
 
+          {showAdditionalFields && selectedRole === "expert" && (
+            <form className="grid grid-cols-1 gap-6 mt-6" action="#" method="post">
+              <label className="block">
+                <span className="text-neutral-800 dark:text-neutral-200">
+                  First Name
+                </span>
+                <Input type="text" placeholder="First Name" className="mt-1" />
+              </label>
+              <label className="block">
+                <span className="text-neutral-800 dark:text-neutral-200">
+                  Last Name
+                </span>
+                <Input type="text" placeholder="Last Name" className="mt-1" />
+              </label>
+              <label className="block">
+                <span className="text-neutral-800 dark:text-neutral-200">
+                  CNIC
+                </span>
+                <Input type="text" placeholder="CNIC" className="mt-1" />
+              </label>
+              <label className="block">
+                <span className="text-neutral-800 dark:text-neutral-200">
+                  Gender
+                </span>
+                <select className="mt-1 block w-full">
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </label>
+              <label className="block">
+                <span className="text-neutral-800 dark:text-neutral-200">
+                  Domain
+                </span>
+                <Input type="text" placeholder="Domain" className="mt-1" />
+              </label>
+              <label className="block">
+                <span className="text-neutral-800 dark:text-neutral-200">
+                  Years of Experience
+                </span>
+                <Input type="number" placeholder="Years of Experience" className="mt-1" />
+              </label>
+              <label className="block">
+                <span className="text-neutral-800 dark:text-neutral-200">
+                  Availability
+                </span>
+                <div className="mt-1 flex space-x-4">
+                  <select className="block w-full">
+                    <option value="monday">Monday</option>
+                    <option value="tuesday">Tuesday</option>
+                    <option value="wednesday">Wednesday</option>
+                    <option value="thursday">Thursday</option>
+                    <option value="friday">Friday</option>
+                    <option value="saturday">Saturday</option>
+                    <option value="sunday">Sunday</option>
+                  </select>
+                  <Input type="time" className="block w-full" />
+                </div>
+              </label>
+              <ButtonPrimary 
+              className="bg-indigo-600 text-white py-2 px-6 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              type="submit">Submit</ButtonPrimary>
+            </form>
+          )}
 
           {/* ==== */}
           <span className="block text-center text-neutral-700 dark:text-neutral-300">
