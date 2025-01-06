@@ -8,7 +8,6 @@ import ButtonPrimary from "shared/Button/ButtonPrimary";
 import ButtonSecondary from "shared/Button/ButtonSecondary";
 import Comment from "shared/Comment/Comment";
 import NcImage from "shared/NcImage/NcImage";
-import SocialsList from "shared/SocialsList/SocialsList";
 import Textarea from "shared/Textarea/Textarea";
 import { Helmet } from "react-helmet-async";
 
@@ -55,7 +54,7 @@ const BlogSingle = () => {
               </div>
             </div>
             <div className="mt-3 sm:mt-0 sm:ml-3">
-              <SocialsList />
+            
             </div>
           </div>
         </div>

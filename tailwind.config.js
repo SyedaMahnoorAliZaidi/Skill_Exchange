@@ -77,5 +77,9 @@ module.exports = {
     require("@tailwindcss/typography"),
     require("@tailwindcss/forms"),
     require("@tailwindcss/aspect-ratio"),
+      require('tailwindcss'),
+      require('autoprefixer'),
+      require('postcss-preset-env')({ stage: 1 })
+    
   ],
 };

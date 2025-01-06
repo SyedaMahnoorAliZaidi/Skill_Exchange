@@ -17,16 +17,7 @@ const solutions = [
     href: "/author",
     icon: UserCircleIcon,
   },
-  {
-    name: "Messages",
-    href: "##",
-    icon: ChatBubbleBottomCenterTextIcon,
-  },
-  {
-    name: "Wishlists",
-    href: "/account-savelists",
-    icon: HeartIcon,
-  },
+ 
   {
     name: "Booking",
     href: "##",
