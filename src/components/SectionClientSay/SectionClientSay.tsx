@@ -24,21 +24,21 @@ const DEMO_DATA = [
     clientName: "Tiana Abie",
     clientAddress: "Malaysia",
     content:
-      "This place is exactly like the picture posted on Chisfis. Great service, we had a great stay!",
+      "Highly impressed with TaskEase! It’s my go-to platform for finding trustworthy professionals when I need help.",
   },
   {
     id: 2,
     clientName: "Lennie Swiffan",
     clientAddress: "London",
     content:
-      "This place is exactly like the picture posted on Chisfis. Great service, we had a great stay!",
+      "I quickly found a skilled graphic designer for my project through TaskEase. The platform is efficient and easy to use!",
   },
   {
     id: 3,
     clientName: "Berta Emili",
     clientAddress: "Tokyo",
     content:
-      "This place is exactly like the picture posted on Chisfis. Great service, we had a great stay!",
+      "TaskEase made finding a reliable plumber so effortless. The process was smooth, and the results were outstanding!",
   },
 ];
 
@@ -64,12 +64,12 @@ const SectionClientSay: FC<SectionClientSayProps> = ({
         <img className="absolute top-9 -left-20" src={clientSay1} alt="" />
         <img
           className="absolute bottom-[100px] right-full mr-40"
-          src={clientSay2}
+          src={clientSay4}
           alt=""
         />
         <img
           className="absolute top-full left-[140px]"
-          src={clientSay3}
+          src={clientSay2}
           alt=""
         />
         <img
@@ -92,7 +92,7 @@ const SectionClientSay: FC<SectionClientSayProps> = ({
       className={`nc-SectionClientSay relative ${className} `}
       data-nc-id="SectionClientSay"
     >
-      <Heading desc="Let's see what people think of Chisfis" isCenter>
+      <Heading desc="Let's see what people think about TaskEase" isCenter>
         Good news from far away
       </Heading>
       <div className="relative md:mb-16 max-w-2xl mx-auto">

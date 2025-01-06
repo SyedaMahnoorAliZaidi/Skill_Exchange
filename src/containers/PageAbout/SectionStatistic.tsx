@@ -12,18 +12,18 @@ const FOUNDER_DEMO: Statistic[] = [
     id: "1",
     heading: "10 million",
     subHeading:
-      "Articles have been public around the world (as of Sept. 30, 2021)",
+      "Users all over Pakistan",
   },
   {
     id: "2",
     heading: "100,000",
-    subHeading: "Registered users account (as of Sept. 30, 2021)",
+    subHeading: "Registered Experts ",
   },
   {
     id: "3",
-    heading: "220+",
+    heading: "20+",
     subHeading:
-      "Countries and regions have our presence (as of Sept. 30, 2021)",
+      "Countries and regions have our presence ",
   },
 ];
 
@@ -35,8 +35,7 @@ const SectionStatistic: FC<SectionStatisticProps> = ({ className = "" }) => {
   return (
     <div className={`nc-SectionStatistic relative ${className}`}>
       <Heading
-        desc=" We’re impartial and independent, and every day we create distinctive,
-          world-class programmes and content"
+        desc=" We’re impartial and independent."
       >
         🚀 Fast Facts
       </Heading>
