@@ -20,6 +20,7 @@
     "@types/react-datepicker": "^4.19.5",
     "@types/react-dom": "^18.2.18",
     "@vis.gl/react-google-maps": "^1.1.0",
+    "axios": "^1.7.9",
     "framer-motion": "^10.17.4",
     "lodash": "^4.17.21",
     "postcss-flexbugs-fixes": "^5.0.2",
