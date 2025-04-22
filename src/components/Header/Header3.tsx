@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from "react";
-import Logo from "shared/Logo/Logo";
+import Logo from "images/dummy images/TaskEase logo.jpg";
 
 import { Link, useLocation } from "react-router-dom";
 
@@ -22,11 +22,12 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
       
       <header  className={`sticky top-0 z-40 ${className}`}>
         
-        <div className="relative px-4 lg:container h-[88px] flex">
+        <div className="relative px-4 lg:container h-[88px] flex ">
           <div className="flex-1 flex items-center justify-between">
             {/* Logo (lg+) */}
             <div className="relative z-10 hidden md:flex flex-1">
-              <Logo />
+            <img src={Logo} alt="TaskEase logo" className="w-32 h-auto" />
+
             </div>
 
           
