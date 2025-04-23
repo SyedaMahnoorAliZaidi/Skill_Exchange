@@ -97,14 +97,13 @@ function PageHome2() {
   return (
     <>
     
+    
     <div className="nc-PageHome2 relative overflow-hidden">
-      {/* GLASSMOPHIN */}
-      {/* <BgGlassmorphism /> */}
-
+      
       <div className="container relative space-y-24 mb-24 lg:space-y-28 lg:mb-28">
         <SectionHero2 className="" />
 
-        {/* SECTION 1 */}
+        {/* SECTION 1
         <div className="ncSectionLogos grid grid-cols-3 lg:grid-cols-5 gap-5 sm:gap-16">
           <div className="flex items-end justify-center">
             <img className="block dark:hidden" src={logo1} alt="logo1" />
@@ -127,7 +126,7 @@ function PageHome2() {
             <img className="block dark:hidden" src={logo5} alt="logo5" />
             <img className="hidden dark:block" src={logo5Dark} alt="logo5" />
           </div>
-        </div>
+        </div> */}
 
         {/* SECTION */}
         <SectionHowItWork
@@ -137,21 +136,21 @@ function PageHome2() {
               img: HIW1img,
               imgDark: HIW1imgDark,
               title: "Smart search",
-              desc: "Name the area or type of home you are looking for the search bar. Our app will find you the perfect match.",
+              desc: "Select the service you are looking for in the search bar. Our app will find you the perfect match.",
             },
             {
               id: 2,
               img: HIW2img,
               imgDark: HIW2imgDark,
-              title: "Choose property",
-              desc: "From the number of options our app will provide, you can select any property that you like to explore.",
+              title: "Choose service",
+              desc: "From the number of options our app will provide, you can select any service that you would like to explore.",
             },
             {
               id: 3,
               img: HIW3img,
               imgDark: HIW3imgDark,
-              title: "Book you property",
-              desc: "Find a home or space from our search bar. Enter your specific location, property type and price range.",
+              title: "Book an appointment",
+              desc: "Select your service , add your address , any additional notes and proceed for booking.",
             },
           ]}
         />
@@ -173,8 +172,8 @@ function PageHome2() {
           categories={DEMO_CATS_2}
           categoryCardType="card4"
           itemPerRow={4}
-          heading="Suggestions for discovery"
-          subHeading="Popular places to stay that Chisfis recommends for you"
+          heading="Services at your footstep"
+          subHeading="popular services to try"
           uniqueClassName="PageHome2_s1"
         />
 

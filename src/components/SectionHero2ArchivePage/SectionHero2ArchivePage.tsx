@@ -28,7 +28,7 @@ const SectionHero2ArchivePage: FC<SectionHero2ArchivePageProps> = ({
           <div className="w-screen right-0 md:right-42 inset-y-0 absolute bg-primary-500"></div>
           <div className="relative max-w-4xl inline-flex flex-shrink-0 flex-col items-start py-20 sm:py-20 space-y-8 sm:space-y-10 text-white">
             <h2 className="font-medium text-4xl md:text-5xl xl:text-7xl ">
-            Your Tasks,Simplified   
+            Your Tasks,Simplified  
             </h2>
             <div className="flex items-center text-base md:text-lg ">
               <i className="text-2xl las la-map-marked"></i>
@@ -40,7 +40,7 @@ const SectionHero2ArchivePage: FC<SectionHero2ArchivePageProps> = ({
           </div>
         </div>
         <div className="hidden lg:block mt-10 w-full">
-          <HeroRealEstateSearchForm />
+        //  <HeroRealEstateSearchForm />
         </div>
       </div>
     </div>
