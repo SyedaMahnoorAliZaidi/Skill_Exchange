@@ -3,7 +3,7 @@
 import React, { FC, useState } from "react";
 import RealEstateSearchForm from "./RealEstateSearchForm";
 
-export type SearchRealEstateTab = "Buy" | "Rent" | "Sell";
+export type SearchRealEstateTab = "Buy" | "Rent" | "Sell"; 
 
 export interface HeroRealEstateSearchFormProps {
   className?: string;
