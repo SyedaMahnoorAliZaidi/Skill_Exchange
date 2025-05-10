@@ -9,31 +9,31 @@ import Slider from "rc-slider";
 import NcInputNumber from "components/NcInputNumber/NcInputNumber";
 
 // DEMO DATA
-const typeOfProperty = [
+const typeOfservice = [
   {
-    name: "Duplex House",
+    name: "Plumber",
     description: "Have a place to yourself",
     checked: true,
   },
   {
-    name: "Ferme House",
+    name: "Electrician",
     description: "Have your own room and share some common spaces",
     checked: true,
   },
   {
-    name: "Chalet House",
+    name: "Beautician",
     description:
       "Have a private or shared room in a boutique hotel, hostel, and more",
     checked: true,
   },
   {
-    name: "Maison House",
+    name: "Tailor",
     description: "Stay in a shared space, like a common room",
   },
 ];
 
 //
-const moreFilter1 = typeOfProperty;
+const moreFilter1 = typeOfservice;
 
 const TabFilters = () => {
   const [isOpenMoreFilter, setisOpenMoreFilter] = useState(false);
@@ -73,7 +73,7 @@ const TabFilters = () => {
                 open ? "!border-primary-500 " : ""
               }`}
             >
-              <span>Rooms of Beds</span>
+              <span>Years of Practice</span>
               <i className="las la-angle-down ml-2"></i>
             </Popover.Button>
             <Transition
@@ -88,9 +88,9 @@ const TabFilters = () => {
               <Popover.Panel className="absolute z-10 w-screen max-w-sm px-4 mt-3 left-0 sm:px-0 lg:max-w-md">
                 <div className="overflow-hidden rounded-2xl shadow-xl bg-white dark:bg-neutral-900   border border-neutral-200 dark:border-neutral-700">
                   <div className="relative flex flex-col px-5 py-6 space-y-5">
-                    <NcInputNumber label="Beds" max={10} />
-                    <NcInputNumber label="Bedrooms" max={10} />
-                    <NcInputNumber label="Bathrooms" max={10} />
+                    <NcInputNumber label="Years" max={10} />
+                    <NcInputNumber label="Months" max={10} />
+                    
                   </div>
                   <div className="p-5 bg-neutral-50 dark:bg-neutral-900 dark:border-t dark:border-neutral-800 flex items-center justify-between">
                     <ButtonThird onClick={close} sizeClass="px-4 py-2 sm:px-5">
@@ -122,7 +122,7 @@ const TabFilters = () => {
                 open ? "!border-primary-500 " : ""
               }`}
             >
-              <span>Type of property</span>
+              <span>Service</span>
               <i className="las la-angle-down ml-2"></i>
             </Popover.Button>
             <Transition
@@ -137,7 +137,7 @@ const TabFilters = () => {
               <Popover.Panel className="absolute z-10 w-screen max-w-sm px-4 mt-3 left-0 sm:px-0 lg:max-w-md">
                 <div className="overflow-hidden rounded-2xl shadow-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700">
                   <div className="relative flex flex-col px-5 py-6 space-y-5">
-                    {typeOfProperty.map((item) => (
+                    {typeOfservice.map((item) => (
                       <div key={item.name} className="">
                         <Checkbox
                           name={item.name}
@@ -403,7 +403,7 @@ const TabFilters = () => {
                       {/* --------- */}
                       {/* ---- */}
                       <div className="py-7">
-                        <h3 className="text-xl font-medium">Rooms and beds</h3>
+                        <h3 className="text-xl font-medium">Years of Practice</h3>
                         <div className="mt-6 relative flex flex-col space-y-5">
                           <NcInputNumber label="Beds" max={10} />
                           <NcInputNumber label="Bedrooms" max={10} />

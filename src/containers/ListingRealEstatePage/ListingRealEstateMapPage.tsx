@@ -29,7 +29,7 @@ const ListingRealEstateMapPage: FC<ListingRealEstateMapPageProps> = ({
   return (
     <div className={`nc-ListingRealEstateMapPage relative ${className}`}>
       <Helmet>
-        <title>Chisfis || Booking React Template</title>
+        <title>yoo</title>
       </Helmet>
 
       {/* SECTION HERO */}

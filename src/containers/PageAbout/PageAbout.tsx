@@ -20,7 +20,7 @@ const PageAbout: FC<PageAboutProps> = ({ className = "" }) => {
       data-nc-id="PageAbout"
     >
       <Helmet>
-        <title>About || Booking React Template</title>
+        <title>TaskEase</title>
       </Helmet>
 
       {/* ======== BG GLASS ======== */}
@@ -29,9 +29,9 @@ const PageAbout: FC<PageAboutProps> = ({ className = "" }) => {
       <div className="container py-16 lg:py-28 space-y-16 lg:space-y-28">
         <SectionHero
           rightImg={rightImg}
-          heading="👋 About Us."
+          heading="👋 Welcome to TaskEase, your go-to skill marketplace!"
           btnText=""
-          subHeading="We’re impartial and independent, and every day we create distinctive, world-class programmes and content which inform, educate and entertain millions of people in the around the world."
+          subHeading=" Our platform is designed to make it easy for you to find reliable experts—whether you need a plumber, electrician or any other service provider."
         />
 
         <SectionFounder />

@@ -30,20 +30,12 @@ const SectionDowloadApp = () => {
 
       <div className="relative inline-block ">
         <h2 className="text-5xl md:text-6xl xl:text-7xl font-bold text-neutral-800">
-          Mobile Apps
+          A Click Away  
         </h2>
         <span className="block mt-7 max-w-md text-neutral-6000">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed dapibus
-          porttitor nisl, sit amet finibus libero.
+         Get Experts From The Comfort Of Your House 
         </span>
-        <div className="flex space-x-3 mt-10 sm:mt-14">
-          <a href="##" target="_blank" rel="noopener noreferrer">
-            <img src={btnIosPng} alt="" />
-          </a>
-          <a href="##" target="_blank" rel="noopener noreferrer">
-            <img src={btnAndroidPng} alt="" />
-          </a>
-        </div>
+          
 
         <img
           className="hidden lg:block absolute lg:left-full lg:top-0 xl:top-1/2 z-10  lg:max-w-sm 2xl:max-w-none"

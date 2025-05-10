@@ -28,7 +28,7 @@ const DEMO_CATS: TaxonomyType[] = [
     taxonomy: "category",
     count: 17288,
     thumbnail:
-      "https://images.pexels.com/photos/2581922/pexels-photo-2581922.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
+      "https://eastwick.edu/wp-content/uploads/2024/09/Eastwick_BlogArticle_Sept2024_Unlocking-Career-Success-The-Path-of-a-Plumber-Apprentice.png",
   },
   {
     id: "2",

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import imagePng from "images/hero-right-3.png";
+import imagePng from "images/dummy images/professionals (2).jpg";
 import HeroRealEstateSearchForm from "components/HeroSearchForm/(real-estate-search-form)/HeroRealEstateSearchForm";
 
 export interface SectionHero2Props {
@@ -28,7 +28,7 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = "", children }) => {
               children
             ) : (
               <h2 className="font-semibold text-4xl md:text-5xl xl:text-7xl !leading-[110%]">
-                Find Your Best <br /> Smart Real Estate
+                Your Experts Now<br /> A Click Away
               </h2>
             )}
           </div>

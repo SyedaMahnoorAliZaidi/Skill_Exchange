@@ -12,7 +12,7 @@ import {
 import React, { FC, Fragment, useState } from "react";
 import Avatar from "shared/Avatar/Avatar";
 import ButtonSecondary from "shared/Button/ButtonSecondary";
-import SocialsList from "shared/SocialsList/SocialsList";
+
 import { Helmet } from "react-helmet-async";
 
 export interface AuthorPageProps {
@@ -43,11 +43,7 @@ const AuthorPage: FC<AuthorPageProps> = ({ className = "" }) => {
           accommodation, an outdoor.
         </p>
 
-        {/* ---- */}
-        <SocialsList
-          className="!space-x-3"
-          itemClass="flex items-center justify-center w-9 h-9 rounded-full bg-neutral-100 dark:bg-neutral-800 text-xl"
-        />
+       
 
         {/* ---- */}
         <div className="border-b border-neutral-200 dark:border-neutral-700 w-14"></div>
