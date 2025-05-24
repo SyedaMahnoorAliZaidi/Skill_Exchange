@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import Header3 from "components/Header/Header3";
 import { PathName } from "routers/types";
 import PageHome2 from "containers/PageHome/PageHome2";
+import LandingPageHeader from "components/LandingPageHeader/landingPageHeader"
 
 const SiteHeader = () => {
   const renderHeader = () => {
@@ -14,7 +15,7 @@ const SiteHeader = () => {
       <Helmet>
         <title>TaskEase</title>
       </Helmet>
-      
+      <LandingPageHeader/>
       <PageHome2/>
       {/* Directly display the Real Estate content for '/home-2' */}
       <div className="real-estate-content">

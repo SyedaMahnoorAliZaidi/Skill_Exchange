@@ -43,6 +43,7 @@ import ListingFlightsPage from "containers/ListingFlightsPage/ListingFlightsPage
 import FooterNav from "components/FooterNav";
 import useWindowSize from "hooks/useWindowResize";
 import Header3 from "components/Header/Header3";
+import LandingPageHeader from "components/LandingPageHeader/landingPageHeader"
 import ListingStayDetailPage from "containers/ListingDetailPage/listing-stay-detail/ListingStayDetailPage";
 import ListingCarDetailPage from "containers/ListingDetailPage/listing-car-detail/ListingCarDetailPage";
 import ListingExperiencesDetailPage from "containers/ListingDetailPage/listing-experiences-detail/ListingExperiencesDetailPage";
@@ -108,8 +109,13 @@ const MyRoutes = () => {
               path={path}
               element={
                 <>
-                  {path !== "/signup" && path !== "/login" && <Header3 />}
-                  <Component />
+                  <Component />   
+
+
+
+
+
+
                 </>
               }
             />
@@ -124,3 +130,4 @@ const MyRoutes = () => {
 };
 
 export default MyRoutes;
+//{path !== "/signup" && path !== "/login" && <Header3 />}

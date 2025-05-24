@@ -23,6 +23,7 @@
     "axios": "^1.7.9",
     "framer-motion": "^10.17.4",
     "lodash": "^4.17.21",
+    "lucide-react": "^0.511.0",
     "postcss-flexbugs-fixes": "^5.0.2",
     "rc-slider": "^10.5.0",
     "react": "^18.2.0",
