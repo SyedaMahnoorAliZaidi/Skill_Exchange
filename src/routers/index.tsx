@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Page } from "./types";
 import ScrollToTop from "./ScrollToTop";
 import Footer from "shared/Footer/Footer";
-import PageHome from "containers/PageHome/PageHome";
+
 import Page404 from "containers/Page404/Page404";
 import ListingStayPage from "containers/ListingStayPage/ListingStayPage";
 import ListingStayMapPage from "containers/ListingStayPage/ListingStayMapPage";
@@ -42,56 +42,36 @@ import SiteHeader from "containers/SiteHeader";
 import ListingFlightsPage from "containers/ListingFlightsPage/ListingFlightsPage";
 import FooterNav from "components/FooterNav";
 import useWindowSize from "hooks/useWindowResize";
-import PageHome3 from "containers/PageHome/PageHome3";
+import Header3 from "components/Header/Header3";
+import LandingPageHeader from "components/LandingPageHeader/landingPageHeader"
 import ListingStayDetailPage from "containers/ListingDetailPage/listing-stay-detail/ListingStayDetailPage";
 import ListingCarDetailPage from "containers/ListingDetailPage/listing-car-detail/ListingCarDetailPage";
 import ListingExperiencesDetailPage from "containers/ListingDetailPage/listing-experiences-detail/ListingExperiencesDetailPage";
 
 export const pages: Page[] = [
-  { path: "/", exact: true, component: PageHome },
-  { path: "/#", exact: true, component: PageHome },
-  { path: "/home-1-header-2", exact: true, component: PageHome },
+  { path: "/", component: SiteHeader },
   { path: "/home-2", component: PageHome2 },
-  { path: "/home-3", component: PageHome3 },
-  //
   { path: "/listing-stay", component: ListingStayPage },
   { path: "/listing-stay-map", component: ListingStayMapPage },
   { path: "/listing-stay-detail", component: ListingStayDetailPage },
-  //
-  {
-    path: "/listing-experiences",
-    component: ListingExperiencesPage,
-  },
-  {
-    path: "/listing-experiences-map",
-    component: ListingExperiencesMapPage,
-  },
-  {
-    path: "/listing-experiences-detail",
-    component: ListingExperiencesDetailPage,
-  },
-  //
+  { path: "/listing-experiences", component: ListingExperiencesPage },
+  { path: "/listing-experiences-map", component: ListingExperiencesMapPage },
+  { path: "/listing-experiences-detail", component: ListingExperiencesDetailPage },
   { path: "/listing-car", component: ListingCarPage },
   { path: "/listing-car-map", component: ListingCarMapPage },
   { path: "/listing-car-detail", component: ListingCarDetailPage },
-  //
   { path: "/listing-real-estate-map", component: ListingRealEstateMapPage },
   { path: "/listing-real-estate", component: ListingRealEstatePage },
-  //
   { path: "/listing-flights", component: ListingFlightsPage },
-  //
   { path: "/checkout", component: CheckOutPage },
   { path: "/pay-done", component: PayPage },
-  //
   { path: "/author", component: AuthorPage },
   { path: "/account", component: AccountPage },
   { path: "/account-password", component: AccountPass },
   { path: "/account-savelists", component: AccountSavelists },
   { path: "/account-billing", component: AccountBilling },
-  //
   { path: "/blog", component: BlogPage },
   { path: "/blog-single", component: BlogSingle },
-  //
   { path: "/add-listing-1", component: PageAddListing1 },
   { path: "/add-listing-2", component: PageAddListing2 },
   { path: "/add-listing-3", component: PageAddListing3 },
@@ -102,13 +82,11 @@ export const pages: Page[] = [
   { path: "/add-listing-8", component: PageAddListing8 },
   { path: "/add-listing-9", component: PageAddListing9 },
   { path: "/add-listing-10", component: PageAddListing10 },
-  //
   { path: "/contact", component: PageContact },
   { path: "/about", component: PageAbout },
   { path: "/signup", component: PageSignUp },
   { path: "/login", component: PageLogin },
   { path: "/subscription", component: PageSubcription },
-  //
 ];
 
 const MyRoutes = () => {
@@ -120,16 +98,31 @@ const MyRoutes = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <SiteHeader />
-
       <Routes>
         {pages.map(({ component, path }) => {
           const Component = component;
-          return <Route key={path} element={<Component />} path={path} />;
-        })}
-        <Route element={<Page404 />} />
-      </Routes>
 
+          // Conditionally render Header3
+          return (
+            <Route
+              key={path}
+              path={path}
+              element={
+                <>
+                  <Component />   
+
+
+
+
+
+
+                </>
+              }
+            />
+          );
+        })}
+        <Route path="*" element={<Page404 />} />
+      </Routes>
       {WIN_WIDTH < 768 && <FooterNav />}
       <Footer />
     </BrowserRouter>
@@ -137,3 +130,4 @@ const MyRoutes = () => {
 };
 
 export default MyRoutes;
+//{path !== "/signup" && path !== "/login" && <Header3 />}

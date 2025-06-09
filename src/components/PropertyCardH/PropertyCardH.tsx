@@ -55,31 +55,29 @@ const PropertyCardH: FC<PropertyCardHProps> = ({
       <div className="inline-grid grid-cols-3 gap-2">
         <div className="flex items-center space-x-2">
           <span className="hidden sm:inline-block">
-            <i className="las la-bed text-lg"></i>
+            
           </span>
           <span className="text-xs text-neutral-500 dark:text-neutral-400">
-            6 beds
+            3 years
           </span>
         </div>
 
         {/* ---- */}
         <div className="flex items-center space-x-2">
           <span className="hidden sm:inline-block">
-            <i className="las la-bath text-lg"></i>
+            
           </span>
           <span className="text-xs text-neutral-500 dark:text-neutral-400">
-            3 baths
+            21 Tasks
           </span>
         </div>
 
         {/* ---- */}
         <div className="flex items-center space-x-2">
           <span className="hidden sm:inline-block">
-            <i className="las la-expand-arrows-alt text-lg"></i>
+            
           </span>
-          <span className="text-xs text-neutral-500 dark:text-neutral-400">
-            1200 Sq. Fit
-          </span>
+          
         </div>
       </div>
     );
@@ -94,19 +92,11 @@ const PropertyCardH: FC<PropertyCardHProps> = ({
               name={
                 <div className="flex items-center">
                   <i className="text-sm las la-share-alt"></i>
-                  <span className="ml-1">4 Network</span>
+                  <span className="ml-1">near</span>
                 </div>
               }
             />
-            <Badge
-              name={
-                <div className="flex items-center">
-                  <i className="text-sm las la-user-friends"></i>
-                  <span className="ml-1">Family</span>
-                </div>
-              }
-              color="yellow"
-            />
+            
           </div>
           <div className="flex items-center space-x-2">
             {isAds && <Badge name="ADS" color="green" />}

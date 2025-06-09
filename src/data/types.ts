@@ -103,7 +103,7 @@ export interface ExperiencesDataType {
   galleryImgs: string[];
   price: string;
   listingCategory: TaxonomyType;
-  maxGuests: number;
+  experience?: number;
   saleOff?: string | null;
   isAds: boolean | null;
   map: {

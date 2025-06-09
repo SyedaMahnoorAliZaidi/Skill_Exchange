@@ -15,41 +15,41 @@ const DEMO_CATS: TaxonomyType[] = [
   {
     id: "1",
     href: "#",
-    name: "Enjoy the Beauty of Brazil ",
+    name: "Enjoy stiched clothes ",
     taxonomy: "category",
     count: 17288,
     thumbnail:
-      "https://images.pexels.com/photos/1118877/pexels-photo-1118877.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
+      "https://as2.ftcdn.net/v2/jpg/02/11/69/69/1000_F_211696928_AjMQAlGNsMTSojXHa4UhFypNbZPeQowR.jpg",
     listingType: "experiences",
   },
   {
     id: "2",
     href: "#",
-    name: "Enjoy the Beauty of Paris",
+    name: "Fix electric chaos ",
     taxonomy: "category",
     count: 2118,
     thumbnail:
-      "https://images.pexels.com/photos/2412609/pexels-photo-2412609.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+      "https://as2.ftcdn.net/jpg/03/27/68/13/1000_F_327681318_zj9nmmzeOkbqx85ALP7Z2mjI58erARK0.webp ",
     listingType: "experiences",
   },
   {
     id: "3",
     href: "#",
-    name: "Enjoy the Beauty of Bangkok",
+    name: "Stop the dripping ",
     taxonomy: "category",
     count: 36612,
     thumbnail:
-      "https://images.pexels.com/photos/732895/pexels-photo-732895.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+      "https://as1.ftcdn.net/v2/jpg/03/29/58/14/1000_F_329581450_931iXKUlekGxzv2rsDgRdlucndykJhkI.jpg",
     listingType: "experiences",
   },
   {
     id: "5",
     href: "#",
-    name: "Enjoy the Beauty of Singapore",
+    name: "Enjoy house help ",
     taxonomy: "category",
     count: 188288,
     thumbnail:
-      "https://images.pexels.com/photos/3152124/pexels-photo-3152124.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
+      "https://as2.ftcdn.net/v2/jpg/02/63/80/61/1000_F_263806150_HatBKt7BhHxkYwberJ9rwDF8ay5mzbH6.jpg",
     listingType: "experiences",
   },
   {
@@ -85,7 +85,7 @@ const ListingRealEstatePage: FC<ListingRealEstatePageProps> = ({
       data-nc-id="ListingRealEstatePage"
     >
       <Helmet>
-        <title>Chisfis || Booking React Template</title>
+        <title>TaskEase</title>
       </Helmet>
 
       <div className="container relative">
@@ -99,8 +99,8 @@ const ListingRealEstatePage: FC<ListingRealEstatePageProps> = ({
         <div className="relative py-16">
           <BackgroundSection />
           <SectionSliderNewCategories
-            heading="Explore top destination ✈"
-            subHeading="Explore thousands of destinations around the world"
+            heading="Explore top services "
+            subHeading="Explore thousands of services around the you"
             categoryCardType="card4"
             itemPerRow={4}
             categories={DEMO_CATS}

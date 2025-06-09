@@ -22,7 +22,7 @@ const DEMO_DATA: SectionHowItWorkProps["data"] = [
     id: 1,
     img: HIW1img,
     title: "Book & relax",
-    desc: "Let each trip be an inspirational journey, each room a peaceful space",
+    desc: "Let ghjkl;'  each trip be an inspirational journey, each room a peaceful space",
   },
   {
     id: 2,
@@ -47,8 +47,8 @@ const SectionHowItWork: FC<SectionHowItWorkProps> = ({
       className={`nc-SectionHowItWork  ${className}`}
       data-nc-id="SectionHowItWork"
     >
-      <Heading isCenter desc="Keep calm & travel on">
-        How it work
+      <Heading isCenter desc="Keep calm & find your service">
+        How We Work
       </Heading>
       <div className="mt-20 relative grid md:grid-cols-3 gap-20">
         <img
