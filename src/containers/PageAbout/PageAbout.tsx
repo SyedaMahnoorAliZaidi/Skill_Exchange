@@ -8,6 +8,7 @@ import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
 import BackgroundSection from "components/BackgroundSection/BackgroundSection";
 import SectionHero from "./SectionHero";
 import SectionClientSay from "components/SectionClientSay/SectionClientSay";
+import Header3 from "components/Header/Header3";
 
 export interface PageAboutProps {
   className?: string;
@@ -15,6 +16,8 @@ export interface PageAboutProps {
 
 const PageAbout: FC<PageAboutProps> = ({ className = "" }) => {
   return (
+    <>
+    <Header3/>
     <div
       className={`nc-PageAbout overflow-hidden relative ${className}`}
       data-nc-id="PageAbout"
@@ -45,6 +48,7 @@ const PageAbout: FC<PageAboutProps> = ({ className = "" }) => {
         <SectionSubscribe2 />
       </div>
     </div>
+    </>
   );
 };
 

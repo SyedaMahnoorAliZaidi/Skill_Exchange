@@ -10,6 +10,8 @@ export interface LocationInputProps {
   className?: string;
   divHideVerticalLineClass?: string;
   autoFocus?: boolean;
+  value?: string;
+  onChange?: (value: string) => void;
 }
 
 const LocationInput: FC<LocationInputProps> = ({
@@ -18,12 +20,18 @@ const LocationInput: FC<LocationInputProps> = ({
   desc = "Where are you going?",
   className = "nc-flex-1.5",
   divHideVerticalLineClass = "left-10 -right-0.5",
+  value: controlledValue,
+  onChange,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(controlledValue || "");
   const [showPopover, setShowPopover] = useState(autoFocus);
+
+  useEffect(() => {
+    if (controlledValue !== undefined) setValue(controlledValue);
+  }, [controlledValue]);
 
   useEffect(() => {
     setShowPopover(autoFocus);
@@ -58,6 +66,7 @@ const LocationInput: FC<LocationInputProps> = ({
 
   const handleSelectLocation = (item: string) => {
     setValue(item);
+    onChange && onChange(item);
     setShowPopover(false);
   };
 
@@ -69,10 +78,62 @@ const LocationInput: FC<LocationInputProps> = ({
         </h3>
         <div className="mt-2">
           {[
-            "Hamptons, Suffolk County, NY",
-            "Las Vegas, NV, United States",
-            "Ueno, Taito, Tokyo",
-            "Ikebukuro, Toshima, Tokyo",
+            "Karachi, Sindh",
+  "Hyderabad, Sindh",
+  "Sukkur, Sindh",
+
+  "Peshawar, Khyber Pakhtunkhwa",
+  "Mardan, Khyber Pakhtunkhwa",
+  "Abbottabad, Khyber Pakhtunkhwa",
+
+  "Quetta, Balochistan",
+
+  "Islamabad, Islamabad Capital Territory",
+
+  // All major cities & district HQs of Punjab
+  "Lahore, Punjab",
+  "Faisalabad, Punjab",
+  "Rawalpindi, Punjab",
+  "Gujranwala, Punjab",
+  "Multan, Punjab",
+  "Sialkot, Punjab",
+  "Bahawalpur, Punjab",
+  "Sargodha, Punjab",
+  "Sheikhupura, Punjab",
+  "Rahim Yar Khan, Punjab",
+  "Jhang, Punjab",
+  "Dera Ghazi Khan, Punjab",
+  "Gujrat, Punjab",
+  "Sahiwal, Punjab",
+  "Wah Cantonment, Punjab",
+  "Okara, Punjab",
+  "Kasur, Punjab",
+  "Chiniot, Punjab",
+  "Mandi Bahauddin, Punjab",
+  "Kamoke, Punjab",
+  "Hafizabad, Punjab",
+  "Khanewal, Punjab",
+  "Muzaffargarh, Punjab",
+  "Mianwali, Punjab",
+  "Bhakkar, Punjab",
+  "Vehari, Punjab",
+  "Lodhran, Punjab",
+  "Jhelum, Punjab",
+  "Toba Tek Singh, Punjab",
+  "Bahawalnagar, Punjab",
+  "Narowal, Punjab",
+  "Khushab, Punjab",
+  "Pakpattan, Punjab",
+  "Attock, Punjab",
+  "Chakwal, Punjab",
+  "Rajana, Punjab",
+  "Kharian, Punjab",
+  "Kot Addu, Punjab",
+  "Kabirwala, Punjab",
+  "Samundri, Punjab",
+  "Shorkot, Punjab",
+  "Daska, Punjab",
+  "Murree, Punjab",
           ].map((item) => (
             <span
               onClick={() => handleSelectLocation(item)}
@@ -96,10 +157,7 @@ const LocationInput: FC<LocationInputProps> = ({
     return (
       <>
         {[
-          "Ha Noi, Viet Nam",
-          "San Diego, CA",
-          "Humboldt Park, Chicago, IL",
-          "Bangor, Northern Ireland",
+          
         ].map((item) => (
           <span
             onClick={() => handleSelectLocation(item)}
@@ -137,6 +195,7 @@ const LocationInput: FC<LocationInputProps> = ({
             autoFocus={showPopover}
             onChange={(e) => {
               setValue(e.currentTarget.value);
+              onChange && onChange(e.currentTarget.value);
             }}
             ref={inputRef}
           />

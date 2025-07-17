@@ -1,29 +1,36 @@
 import React, { FC } from "react";
 import Textarea from "shared/Textarea/Textarea";
 import CommonLayout from "./CommonLayout";
+import { useListingForm } from "../../context/ListingFormProvider";
 
 export interface PageAddListing6Props {}
 
 const PageAddListing6: FC<PageAddListing6Props> = () => {
+  const { listingData, updateListingData } = useListingForm();
+
   return (
     <CommonLayout
-      index="06"
+      index="05"
       backtHref="/add-listing-5"
       nextHref="/add-listing-7"
     >
       <>
         <div>
           <h2 className="text-2xl font-semibold">
-            Your place description for client
+            Description
           </h2>
           <span className="block mt-2 text-neutral-500 dark:text-neutral-400">
-            Mention the best features of your accommodation, any special
-            amenities like fast Wi-Fi or parking, as well as things you like
-            about the neighborhood.
-          </span>
+  Describe your service in detail, including what makes you stand out, the tools or methods you use, and any guarantees or specialties you offer. Be clear about what clients can expect.
+</span>
+
         </div>
 
-        <Textarea placeholder="..." rows={14} />
+        <Textarea 
+          placeholder="" 
+          rows={14} 
+          value={listingData.description}
+          onChange={(e) => updateListingData({ description: e.target.value })}
+        />
       </>
     </CommonLayout>
   );

@@ -27,7 +27,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({
         <div>
           <span className="text-4xl font-semibold">{index}</span>{" "}
           <span className="text-lg text-neutral-500 dark:text-neutral-400">
-            / 10
+            / 9
           </span>
         </div>
 

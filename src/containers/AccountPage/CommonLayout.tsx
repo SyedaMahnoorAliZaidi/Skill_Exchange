@@ -1,6 +1,7 @@
 import React from "react";
 import { FC } from "react";
 import { NavLink } from "react-router-dom";
+import Header3 from "components/Header/Header3";
 
 export interface CommonLayoutProps {
   children?: React.ReactNode;
@@ -8,6 +9,8 @@ export interface CommonLayoutProps {
 
 const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
   return (
+    <>
+      
     <div className="nc-CommonLayoutProps bg-neutral-50 dark:bg-neutral-900">
       <div className="border-b border-neutral-200 dark:border-neutral-700 pt-12 bg-white dark:bg-neutral-800">
         <div className="container">
@@ -22,16 +25,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
             >
               Account info
             </NavLink>
-            <NavLink
-              to="/account-savelists"
-              className={({ isActive }) =>
-                `block py-5 md:py-8 border-b-2 flex-shrink-0 ${
-                  !isActive ? "border-transparent" : "border-primary-500"
-                }`
-              }
-            >
-              Save lists
-            </NavLink>
+            
             <NavLink
               to="/account-password"
               className={({ isActive }) =>
@@ -57,6 +51,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
       </div>
       <div className="container pt-14 sm:pt-20 pb-24 lg:pb-32">{children}</div>
     </div>
+    </>
   );
 };
 

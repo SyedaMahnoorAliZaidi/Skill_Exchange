@@ -93,7 +93,7 @@ const ListingRealEstatePage: FC<ListingRealEstatePageProps> = ({
         <SectionHero2ArchivePage className="" />
 
         {/* SECTION */}
-        <SectionGridFilterCard className="py-24 lg:py-28" />
+        <SectionGridFilterCard className="py-24 lg:py-28" data={[]} />
 
         {/* SECTION 1 */}
         <div className="relative py-16">

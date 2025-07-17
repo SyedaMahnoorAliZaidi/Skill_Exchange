@@ -1,78 +1,66 @@
-import DatePickerCustomDay from "components/DatePickerCustomDay";
-import DatePickerCustomHeaderTwoMonth from "components/DatePickerCustomHeaderTwoMonth";
-import NcInputNumber from "components/NcInputNumber/NcInputNumber";
-import React, { FC, useState } from "react";
-import DatePicker from "react-datepicker";
+import React, { FC } from "react";
 import CommonLayout from "./CommonLayout";
+import { useListingForm } from "../../context/ListingFormProvider";
 
-export interface PageAddListing9Props {}
+const PageAddListing9: FC = () => {
+  const { listingData, updateListingData } = useListingForm();
 
-const PageAddListing9: FC<PageAddListing9Props> = () => {
-  const [dates, setDates] = useState<number[]>([
-    new Date("2023/02/06").getTime(),
-    new Date("2023/02/09").getTime(),
-    new Date("2023/02/15").getTime(),
-  ]);
+  const generateTimeSlots = () => {
+    const slots: string[] = [];
+    const start = 10 * 60;
+    const end = 21 * 60;
+    for (let i = start; i <= end; i += 30) {
+      const hours = Math.floor(i / 60);
+      const minutes = i % 60;
+      const suffix = hours >= 12 ? "PM" : "AM";
+      const displayHour = hours % 12 === 0 ? 12 : hours % 12;
+      const formatted = `${displayHour.toString().padStart(2, "0")}:${minutes
+        .toString()
+        .padStart(2, "0")} ${suffix}`;
+      slots.push(formatted);
+    }
+    return slots;
+  };
+
+  const timeSlots = generateTimeSlots();
+
+  const handleSlotClick = (slot: string) => {
+    const isSelected = listingData.timeSlots?.includes(slot);
+    const updatedSlots = isSelected
+      ? listingData.timeSlots?.filter((s) => s !== slot)
+      : [...(listingData.timeSlots || []), slot];
+    updateListingData({ timeSlots: updatedSlots });
+  };
 
   return (
-    <CommonLayout
-      index="09"
-      backtHref="/add-listing-8"
-      nextHref="/add-listing-10"
-    >
+    <CommonLayout index="08" backtHref="/add-listing-8" nextHref="/add-listing-10">
       <>
-        <div>
-          <h2 className="text-2xl font-semibold">How long can guests stay?</h2>
-          <span className="block mt-2 text-neutral-500 dark:text-neutral-400">
-            {` Shorter trips can mean more reservations, but you'll turn over your
-          space more often.`}
+        <div className="flex items-center mb-4">
+          <span className="mr-2">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
           </span>
-        </div>
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
-        {/* FORM */}
-        <div className="space-y-7">
-          {/* ITEM */}
-          <NcInputNumber label="Nights min" defaultValue={1} />
-          <NcInputNumber label="Nights max" defaultValue={99} />
+          <span className="text-lg font-medium text-neutral-600 dark:text-neutral-300">Slots</span>
         </div>
 
-        {/*  */}
-        <div>
-          <h2 className="text-2xl font-semibold">Set your availability</h2>
-          <span className="block mt-2 text-neutral-500 dark:text-neutral-400">
-            Editing your calendar is easy—just select a date to block or unblock
-            it. You can always make changes after you publish.
-          </span>
-        </div>
-
-        <div className="addListingDatePickerExclude">
-          <DatePicker
-            onChange={(date) => {
-              let newDates = [];
-
-              if (!date) {
-                return;
-              }
-              const newTime = date.getTime();
-              if (dates.includes(newTime)) {
-                newDates = dates.filter((item) => item !== newTime);
-              } else {
-                newDates = [...dates, newTime];
-              }
-              setDates(newDates);
-            }}
-            selected={new Date("2023/02/06")}
-            monthsShown={2}
-            showPopperArrow={false}
-            excludeDates={dates.filter(Boolean).map((item) => new Date(item))}
-            inline
-            renderCustomHeader={(p) => (
-              <DatePickerCustomHeaderTwoMonth {...p} />
-            )}
-            renderDayContents={(day, date) => (
-              <DatePickerCustomDay dayOfMonth={day} date={date} />
-            )}
-          />
+        <div className="flex flex-wrap gap-4">
+          {timeSlots.map((slot) => {
+            const isSelected = listingData.timeSlots?.includes(slot);
+            return (
+              <button
+                key={slot}
+                onClick={() => handleSlotClick(slot)}
+                className={`px-8 py-3 rounded-xl border text-lg font-semibold focus:outline-none transition-all duration-150 ${
+                  isSelected
+                    ? "bg-blue-100 border-blue-400 text-blue-700 shadow"
+                    : "bg-white border-neutral-200 text-neutral-700 hover:bg-neutral-100"
+                }`}
+              >
+                {slot}
+              </button>
+            );
+          })}
         </div>
       </>
     </CommonLayout>

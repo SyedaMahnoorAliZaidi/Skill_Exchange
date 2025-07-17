@@ -29,16 +29,22 @@ const defaultPropertyType: ClassOfProperties[] = [
 ];
 
 export interface PropertyTypeSelectProps {
-  onChange?: (data: any) => void;
+  value?: ClassOfProperties[];
+  onChange?: (data: ClassOfProperties[]) => void;
   fieldClassName?: string;
 }
 
 const PropertyTypeSelect: FC<PropertyTypeSelectProps> = ({
+  value,
   onChange,
   fieldClassName = "[ nc-hero-field-padding ]",
 }) => {
   const [typeOfProperty, setTypeOfProperty] =
-    React.useState<ClassOfProperties[]>(defaultPropertyType);
+    React.useState<ClassOfProperties[]>(value || defaultPropertyType);
+
+  React.useEffect(() => {
+    if (value) setTypeOfProperty(value);
+  }, [value]);
 
   let typeOfPropertyText = "";
   if (typeOfProperty && typeOfProperty.length > 0) {
