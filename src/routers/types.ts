@@ -1,11 +1,13 @@
 import { ComponentType } from "react";
 
 export interface LocationStates {
-  "/"?: {};
-  "/#"?: {};
-  "/home-2"?: {};
-  "/home-3"?: {};
-  "/home-1-header-2"?: {};
+  "/": {};
+  
+  "/adminHomepage": {};
+  "/delete-service": {};
+  "/home-2": {};
+  "/home-3": {};
+  "/home-1-header-2": {};
   //
   "/listing-flights"?: {};
   //
@@ -39,7 +41,6 @@ export interface LocationStates {
   "/add-listing-1"?: {};
   "/add-listing-2"?: {};
   "/add-listing-3"?: {};
-  "/add-listing-4"?: {};
   "/add-listing-5"?: {};
   "/add-listing-6"?: {};
   "/add-listing-7"?: {};
@@ -56,6 +57,50 @@ export interface LocationStates {
   "/forgot-pass"?: {};
   "/page404"?: {};
   "/subscription"?: {};
+  "/booking"?: {};
+  "/admin-bookings"?: {};
+  "/customer-bookings"?: {};
+  "/expert-service-detail"?: {};
+  "/service-detail"?: {};
+  "/customer-service-detail"?: {};
+  "/stitching"?: {};
+  "/plumbing"?: {};
+  "/electrical"?: {};
+  "/carpentry"?: {};
+  "/cleaning"?: {};
+  "/gardening"?: {};
+  "/painting"?: {};
+  "/moving"?: {};
+  "/repair"?: {};
+  "/installation"?: {};
+  "/maintenance"?: {};
+  "/customer-home"?: {};
+  "/terms-of-service"?: {};
+  "/privacy-policy"?: {};
+  "/cookie-policy"?: {};
+  "/refund-policy"?: {};
+  "/safety-guidelines"?: {};
+  "/customer-faq"?: {};
+  "/expert-faq"?: {};
+  "/expert-account"?: {};
+  "/expert-stitching"?: {};
+  "/expert-electrical"?: {};
+  "/expert-plumbing"?: {};
+  "/expert-painting"?: {};
+  "/expert-maintenance"?: {};
+  "/expert-gardening"?: {};
+  "/expert-carpentry"?: {};
+  "/expert-repair"?: {};
+  "/expert-moving"?: {};
+  "/expert-installation"?: {};
+  "/expert-cleaning"?: {};
+  "/admin-account-savelists"?: {};
+  "/admin-account-billing"?: {};
+  "/admin-account-pass"?: {};
+  "/admin-common-layout"?: {};
+  "/expert-about"?: {};
+  "/admin-nav-mobile"?: {};
+  "/expert-aboutus"?: {};
 }
 
 export type PathName = keyof LocationStates;

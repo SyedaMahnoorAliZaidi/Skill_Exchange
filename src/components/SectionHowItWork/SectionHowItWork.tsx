@@ -17,6 +17,8 @@ export interface SectionHowItWorkProps {
   }[];
 }
 
+  
+
 const DEMO_DATA: SectionHowItWorkProps["data"] = [
   {
     id: 1,

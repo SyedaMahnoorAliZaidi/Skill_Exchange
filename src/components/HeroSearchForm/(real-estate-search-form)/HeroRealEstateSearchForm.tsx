@@ -2,17 +2,32 @@
 
 import React, { FC, useState } from "react";
 import RealEstateSearchForm from "./RealEstateSearchForm";
+import { ClassOfProperties } from "../type";
 
 export type SearchRealEstateTab = "Buy" | "Rent" | "Sell"; 
 
 export interface HeroRealEstateSearchFormProps {
   className?: string;
   currentTab?: SearchRealEstateTab;
+  location?: string;
+  onLocationChange?: (value: string) => void;
+  propertyType?: ClassOfProperties[];
+  onPropertyTypeChange?: (value: ClassOfProperties[]) => void;
+  priceRange?: [number, number];
+  onPriceRangeChange?: (value: [number, number]) => void;
+  onSearch?: () => void;
 }
 
 const HeroRealEstateSearchForm: FC<HeroRealEstateSearchFormProps> = ({
   className = "",
   currentTab = "Buy",
+  location = "",
+  onLocationChange = () => {},
+  propertyType = [],
+  onPropertyTypeChange = () => {},
+  priceRange = [0, 0],
+  onPriceRangeChange = () => {},
+  onSearch = () => {},
 }) => {
   const tabs: SearchRealEstateTab[] = ["Buy", "Rent", "Sell"];
   const [tabActive, setTabActive] = useState<SearchRealEstateTab>(currentTab);
@@ -46,10 +61,10 @@ const HeroRealEstateSearchForm: FC<HeroRealEstateSearchFormProps> = ({
   const renderForm = () => {
     switch (tabActive) {
       case "Buy":
-        return <RealEstateSearchForm />;
-
+        return <RealEstateSearchForm/>;
       default:
-        return <RealEstateSearchForm />;
+        return <RealEstateSearchForm
+/>;
     }
   };
 
@@ -57,7 +72,7 @@ const HeroRealEstateSearchForm: FC<HeroRealEstateSearchFormProps> = ({
     <div
       className={`nc-HeroRealEstateSearchForm w-full max-w-6xl py-5 lg:py-0 ${className}`}
     >
-      {renderTab()}
+      {/* {renderTab()} */}
       {renderForm()}
     </div>
   );

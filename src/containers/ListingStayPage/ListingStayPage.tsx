@@ -19,7 +19,7 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
       data-nc-id="ListingStayPage"
     >
       <Helmet>
-        <title>Chisfis || Booking React Template</title>
+        <title>TaskEase</title>
       </Helmet>
       <BgGlassmorphism />
 
@@ -32,7 +32,7 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
         />
 
         {/* SECTION */}
-        <SectionGridFilterCard className="pb-24 lg:pb-28" />
+        <SectionGridFilterCard className="pb-24 lg:pb-28" data={[]} />
 
         {/* SECTION 1 */}
         <div className="relative py-16">

@@ -5,10 +5,13 @@ import { StayDataType } from "data/types";
 import Pagination from "shared/Pagination/Pagination";
 import TabFilters from "./TabFilters";
 import Heading2 from "components/Heading/Heading2";
+import ButtonPrimary from "shared/Button/ButtonPrimary";
+import HeaderFilter from "../../containers/LandingPage/HeaderFilter";
+import PropertyCardH from "components/PropertyCardH/PropertyCardH";
 
 export interface SectionGridFilterCardProps {
   className?: string;
-  data?: StayDataType[];
+  data: any[];
 }
 
 const DEMO_DATA: StayDataType[] = DEMO_STAY_LISTINGS.filter((_, i) => i < 8);

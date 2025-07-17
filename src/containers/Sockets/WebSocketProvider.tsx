@@ -23,7 +23,7 @@ const WebSocketClient = () => {
     };
   }, []);
 
-  return <div>WebSocket Client Active (check console logs)</div>;
+  return <div></div>;
 };
 
 export default WebSocketClient;

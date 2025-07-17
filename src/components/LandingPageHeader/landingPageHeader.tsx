@@ -1,6 +1,7 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Logo from "images/dummy images/TaskEase logo.jpg";
+import LogoLight from "images/dummy images/light.png";
+import LogoDark from "images/dummy images/dark.png";
 import MenuBar from "shared/MenuBar/MenuBar";
 
 // Lucide icons
@@ -10,14 +11,27 @@ interface Header3Props {
   className?: string;
 }
 
+
+
 const Header3: FC<Header3Props> = ({ className = "" }) => {
+  const [isDark, setIsDark] = useState(false);
+  useEffect(() => {
+    const checkDark = () => {
+      setIsDark(document.documentElement.classList.contains("dark") || document.body.classList.contains("dark"));
+    };
+    checkDark();
+    const observer = new MutationObserver(checkDark);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
   return (
     <header className={`sticky top-0 z-40 ${className}`}>
       <div className="relative px-4 lg:container h-[88px] flex">
         <div className="flex-1 flex items-center justify-between">
           {/* Logo (lg+) */}
           <div className="relative z-10 hidden md:flex flex-1">
-            <img src={Logo} alt="TaskEase logo" className="w-32 h-auto" />
+            <img src={isDark ? LogoDark : LogoLight} alt="TaskEase logo" className="w-32 h-auto" />
           </div>
 
           {/* NAV */}

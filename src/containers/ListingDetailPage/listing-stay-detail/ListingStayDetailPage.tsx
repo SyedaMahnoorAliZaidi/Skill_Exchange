@@ -18,14 +18,49 @@ import Input from "shared/Input/Input";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import DetailPagetLayout from "../Layout";
 import GuestsInput from "./GuestsInput";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+// Fix default marker icon in Leaflet
+// (do this only once per app, but safe here for this file)
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+});
 
 const StayDetailPageContainer: FC<{}> = () => {
-  //
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false);
+  const [modalImg, setModalImg] = useState<string | null>(null);
+  const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
 
-  let [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false);
+  const { service, selectedSlot: locationSelectedSlot } = location.state || {};
 
-  const thisPathname = useLocation().pathname;
-  const router = useNavigate();
+  if (!service) {
+    return (
+      <div className="container py-10">
+        <h2 className="text-2xl font-semibold mb-4">No service data found.</h2>
+        <p>Please select a service from the listings page.</p>
+      </div>
+    );
+  }
+
+  // Helper to build full URL
+  const getImageUrl = (path: string) =>
+    path?.startsWith("/") ? `http://localhost:8000${path}` : path;
+
+  // Build all images: cover + work_images
+  const allImages: string[] = [
+    ...(service.cover_image ? [getImageUrl(service.cover_image)] : []),
+    ...(Array.isArray(service.work_images)
+      ? service.work_images.map((imgObj: any) => getImageUrl(imgObj.image))
+      : [])
+  ];
+
+  const thisPathname = location.pathname;
 
   function closeModalAmenities() {
     setIsOpenModalAmenities(false);
@@ -36,359 +71,335 @@ const StayDetailPageContainer: FC<{}> = () => {
   }
 
   const handleOpenModalImageGallery = () => {
-    router(`${thisPathname}/?modal=PHOTO_TOUR_SCROLLABLE`);
+    navigate(`${thisPathname}/?modal=PHOTO_TOUR_SCROLLABLE`);
   };
 
+  const handleImageClick = (img: string) => setModalImg(img);
+  const closeModal = () => setModalImg(null);
+
   const renderSection1 = () => {
+    if (!service) return null;
+    // Get expert name, service name, and city
+    const expertName = service.author?.displayName || service.expert_name || '-';
+    const serviceName = service.selected_service || service.listingCategory?.name || '-';
+    const city = service.city || '-';
     return (
-      <div className="listingSection__wrap !space-y-6">
-        {/* 1 */}
-        <div className="flex justify-between items-center">
-          <Badge name="Wooden house" />
-          <LikeSaveBtns />
+      <div className="listingSection__wrap !space-y-0 p-4 bg-gray-100">
+         {/* Service Name */}
+         <div className="flex items-center space-x-3 mt-5">
+          {/* <i className="las la-briefcase text-3xl text-blue-500"></i> */}
+          <span className="text-[50px] font-bold text-black-700">{serviceName}</span>
+          
         </div>
-
-        {/* 2 */}
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold">
-          Beach House in Collingwood
-        </h2>
-
-        {/* 3 */}
-        <div className="flex items-center space-x-4">
-          <StartRating />
-          <span>·</span>
-          <span>
-            <i className="las la-map-marker-alt"></i>
-            <span className="ml-1"> Tokyo, Jappan</span>
-          </span>
+        <br></br>
+        
+        
+        {/* Expert Name */}
+        <div className="flex items-center space-x-3 mt-2">
+          <i className="las la-user text-2xl text-blue-600"></i>
+          <span className="font-semibold text-lg text-gray-800">{expertName}</span>
         </div>
-
-        {/* 4 */}
-        <div className="flex items-center">
-          <Avatar hasChecked sizeClass="h-10 w-10" radius="rounded-full" />
-          <span className="ml-2.5 text-neutral-500 dark:text-neutral-400">
-            Hosted by{" "}
-            <span className="text-neutral-900 dark:text-neutral-200 font-medium">
-              Kevin Francis
-            </span>
-          </span>
-        </div>
-
-        {/* 5 */}
-        <div className="w-full border-b border-neutral-100 dark:border-neutral-700" />
-
-        {/* 6 */}
-        <div className="flex items-center justify-between xl:justify-start space-x-8 xl:space-x-12 text-sm text-neutral-700 dark:text-neutral-300">
-          <div className="flex items-center space-x-3 ">
-            <i className=" las la-user text-2xl "></i>
-            <span className="">
-              6 <span className="hidden sm:inline-block">guests</span>
-            </span>
-          </div>
-          <div className="flex items-center space-x-3">
-            <i className=" las la-bed text-2xl"></i>
-            <span className=" ">
-              6 <span className="hidden sm:inline-block">beds</span>
-            </span>
-          </div>
-          <div className="flex items-center space-x-3">
-            <i className=" las la-bath text-2xl"></i>
-            <span className=" ">
-              3 <span className="hidden sm:inline-block">baths</span>
-            </span>
-          </div>
-          <div className="flex items-center space-x-3">
-            <i className=" las la-door-open text-2xl"></i>
-            <span className=" ">
-              2 <span className="hidden sm:inline-block">bedrooms</span>
-            </span>
-          </div>
+       
+        {/* City */}
+        <div className="flex items-center space-x-3 mt-1">
+          <i className="las la-map-marker-alt text-2xl text-green-500"></i>
+          <span className="text-lg text-gray-600">{city}</span>
         </div>
       </div>
     );
   };
 
   const renderSection2 = () => {
+    if (!service) return null;
     return (
-      <div className="listingSection__wrap">
-        <h2 className="text-2xl font-semibold">Stay information</h2>
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
+      <div className="listingSection__wrap !space-y-0 p-4 bg-gray-50">
+        <h2 className="text-2xl font-semibold mb-0">Service Description</h2>
+        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700 mb-2"></div>
         <div className="text-neutral-6000 dark:text-neutral-300">
-          <span>
-            Providing lake views, The Symphony 9 Tam Coc in Ninh Binh provides
-            accommodation, an outdoor swimming pool, a bar, a shared lounge, a
-            garden and barbecue facilities. Complimentary WiFi is provided.
-          </span>
-          <br />
-          <br />
-          <span>
-            There is a private bathroom with bidet in all units, along with a
-            hairdryer and free toiletries.
-          </span>
-          <br /> <br />
-          <span>
-            The Symphony 9 Tam Coc offers a terrace. Both a bicycle rental
-            service and a car rental service are available at the accommodation,
-            while cycling can be enjoyed nearby.
-          </span>
+          <span>{service.description}</span>
         </div>
       </div>
     );
   };
 
   const renderSection3 = () => {
+    if (!service) return null;
+    let specificServices = [];
+    try {
+      specificServices = typeof service.specific_services === "string"
+        ? JSON.parse(service.specific_services)
+        : service.specific_services || [];
+    } catch {
+      specificServices = [];
+    }
     return (
-      <div className="listingSection__wrap">
+      <div className="listingSection__wrap !space-y-0 p-4 bg-gray-50">
         <div>
-          <h2 className="text-2xl font-semibold">Amenities </h2>
-          <span className="block mt-2 text-neutral-500 dark:text-neutral-400">
-            {` About the property's amenities and services`}
+          <h2 className="text-2xl font-semibold mb-2">Specific Services</h2>
+          <span className="block mt-1 mb-3 text-neutral-500 dark:text-neutral-400">
+            All the specific services offered
           </span>
         </div>
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
-        {/* 6 */}
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 text-sm text-neutral-700 dark:text-neutral-300 ">
-          {Amenities_demos.filter((_, i) => i < 12).map((item) => (
-            <div key={item.name} className="flex items-center space-x-3">
-              <i className={`text-3xl las ${item.icon}`}></i>
-              <span className=" ">{item.name}</span>
+        <div className="w-14 border-b border-neutral-200 dark:border-blue-700 mb-4 mt-1 "></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 border-blue-200 md:grid-cols-3 gap-4 mt-0 mb-5 border-blue-500">
+          {specificServices.map((item: string, idx: number) => (
+            <div
+              key={idx}
+              className="px-6 py-3 rounded-xl border text-lg font-semibold bg-blue-50 border-blue-200 text-blue-700 text-center shadow"            >
+              
+              <span className="text-lg">{item}</span>
             </div>
           ))}
         </div>
-
-        {/* ----- */}
-        <div className="w-14 border-b border-neutral-200"></div>
-        <div>
-          <ButtonSecondary onClick={openModalAmenities}>
-            View more 20 amenities
-          </ButtonSecondary>
-        </div>
-        {renderMotalAmenities()}
       </div>
     );
   };
 
-  const renderMotalAmenities = () => {
+  const renderSection4 = () => {
+    if (!service) return null;
+    // Try to get time slots from service data
+    let timeSlots: string[] = [];
+    if (service.originalData?.time_slots) {
+      timeSlots = Array.isArray(service.originalData.time_slots)
+        ? service.originalData.time_slots
+        : [];
+    } else if (service.time_slots) {
+      timeSlots = Array.isArray(service.time_slots)
+        ? service.time_slots
+        : [];
+    }
     return (
-      <Transition appear show={isOpenModalAmenities} as={Fragment}>
-        <Dialog
-          as="div"
-          className="fixed inset-0 z-50 overflow-y-auto"
-          onClose={closeModalAmenities}
-        >
-          <div className="min-h-screen px-4 text-center">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-40" />
-            </Transition.Child>
+      <div className="listingSection__wrap !space-y-0 p-4 bg-gray-50 mb-3">
+        <div className="flex items-center mb-6">
+          <span className="mr-2">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </span>
+          <span className="text-lg font-medium text-neutral-600 dark:text-neutral-300">Slots</span>
+        </div>
+           <span className="block mt-2 mb-4 text-neutral-500 dark:text-neutral-400">
+            Please select a time slot 
+          </span>
 
-            {/* This element is to trick the browser into centering the modal contents. */}
-            <span
-              className="inline-block h-screen align-middle"
-              aria-hidden="true"
-            >
-              &#8203;
-            </span>
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
-              <div className="inline-block py-8 h-screen w-full max-w-4xl">
-                <div className="inline-flex pb-2 flex-col w-full text-left align-middle transition-all transform overflow-hidden rounded-2xl bg-white dark:bg-neutral-900 dark:border dark:border-neutral-700 dark:text-neutral-100 shadow-xl h-full">
-                  <div className="relative flex-shrink-0 px-6 py-4 border-b border-neutral-200 dark:border-neutral-800 text-center">
-                    <h3
-                      className="text-lg font-medium leading-6 text-gray-900"
-                      id="headlessui-dialog-title-70"
-                    >
-                      Amenities
-                    </h3>
-                    <span className="absolute left-3 top-3">
-                      <ButtonClose onClick={closeModalAmenities} />
-                    </span>
-                  </div>
-                  <div className="px-8 overflow-auto text-neutral-700 dark:text-neutral-300 divide-y divide-neutral-200">
-                    {Amenities_demos.filter((_, i) => i < 1212).map((item) => (
-                      <div
-                        key={item.name}
-                        className="flex items-center py-2.5 sm:py-4 lg:py-5 space-x-5 lg:space-x-8"
-                      >
-                        <i
-                          className={`text-4xl text-neutral-6000 las ${item.icon}`}
-                        ></i>
-                        <span>{item.name}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </Transition.Child>
-          </div>
-        </Dialog>
-      </Transition>
+
+
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-5 mb-5">
+          {timeSlots.length > 0 ? (
+            timeSlots.map((slot, idx) => (
+              <button
+                key={idx}
+                className={`px-6 py-3 rounded-xl border text-lg font-semibold text-center shadow
+                  ${selectedSlot === slot
+                    ? "bg-blue-600 text-white border-blue-600"
+                    : "bg-blue-50 text-blue-700 border-blue-200"}
+                `}
+                onClick={() => setSelectedSlot(slot)}
+                type="button"
+              >
+                {slot}
+              </button>
+            ))
+          ) : (
+            <span className="text-neutral-400 col-span-full">No slots available</span>
+          )}
+        </div>
+      </div>
     );
   };
 
-  const renderSection4 = () => {
+  const renderSectionMap = () => {
+    if (!service) return null;
+    const lat = Number(service.latitude || service.originalData?.latitude);
+    const lng = Number(service.longitude || service.originalData?.longitude);
+    const hasCoords = !isNaN(lat) && !isNaN(lng);
     return (
-      <div className="listingSection__wrap">
-        {/* HEADING */}
-        <div>
-          <h2 className="text-2xl font-semibold">Room Rates </h2>
-          <span className="block mt-2 text-neutral-500 dark:text-neutral-400">
-            Prices may increase on weekends or holidays
-          </span>
+      <div className="listingSection__wrap !space-y-0 p-4 bg-gray-50">
+        <h2 className="text-2xl font-semibold mb-2">Location Map</h2>
+        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700 mb-2"></div>
+        {hasCoords ? (
+          <div className="h-72 w-full rounded-lg overflow-hidden">
+            <MapContainer center={[lat, lng]} zoom={13} scrollWheelZoom={false} style={{ height: "100%", width: "100%" }}>
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={[lat, lng]} />
+            </MapContainer>
+          </div>
+        ) : (
+          <div className="text-neutral-400">No location coordinates available.</div>
+        )}
+      </div>
+    );
+  };
+
+  type AttributeKey = 'clientPresent' | 'useTools' | 'trialSession' | 'lateArrival' | 'sameDayCancel' | 'rescheduling' | 'partialPayment' | 'inspection';
+  const getAttr = (key: AttributeKey) => service[key] || service.originalData?.[key];
+  const renderSectionAttributes = () => {
+    if (!service) return null;
+    const attributes: { key: AttributeKey; label: string }[] = [
+      { key: 'clientPresent', label: "Client allowed during service" },
+      { key: 'useTools', label: "Use of expert's tools" },
+      { key: 'trialSession', label: "Trial/demo session" },
+      { key: 'lateArrival', label: "Late arrival tolerance" },
+      { key: 'sameDayCancel', label: "Same-day cancellations" },
+      { key: 'rescheduling', label: "Rescheduling option" },
+      { key: 'partialPayment', label: "Partial payments" },
+      { key: 'inspection', label: "Post-service inspection" },
+    ];
+    return (
+      <div className="listingSection__wrap !space-y-0 p-4 bg-gray-50">
+        <h2 className="text-2xl font-semibold mb-2">Service Attributes</h2>
+        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700 mb-2"></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {attributes.map(attr => {
+            const value = getAttr(attr.key);
+            const allowed = value === 'Allow';
+            return (
+              <div
+                key={attr.key}
+                className="flex items-center justify-between p-3 rounded-lg bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700"
+              >
+                <div className="flex items-center">
+                  {allowed ? (
+                    <i className="las la-check-circle text-2xl text-green-500 mr-3"></i>
+                  ) : (
+                    <i className="las la-times-circle text-2xl text-red-500 mr-3"></i>
+                  )}
+                  <span className="font-medium flex-1">{attr.label}</span>
+                </div>
+              </div>
+            );
+          })}
         </div>
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
-        {/* CONTENT */}
-        <div className="flow-root">
-          <div className="text-sm sm:text-base text-neutral-6000 dark:text-neutral-300 -mb-4">
-            <div className="p-4 bg-neutral-100 dark:bg-neutral-800 flex justify-between items-center space-x-4 rounded-lg">
-              <span>Monday - Thursday</span>
-              <span>$199</span>
+      </div>
+    );
+  };
+
+  const renderSectionWorkImages = () => {
+    if (!service) return null;
+    const coverImage = service.coverImage || service.featuredImage;
+    const workImages = (service.workImages && service.workImages.length > 0)
+      ? service.workImages
+      : (service.galleryImgs && service.galleryImgs.length > 0)
+        ? service.galleryImgs
+        : [];
+    if (!coverImage && workImages.length === 0) return null;
+    return (
+      <div className="listingSection__wrap !space-y-0 p-4 bg-gray-50">
+        <h2 className="text-2xl font-semibold mb-2">Work Images</h2>
+        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700 mb-2"></div>
+        {/* Cover Image */}
+        {coverImage && (
+          <div className="mb-6">
+            <div className="flex items-center mb-2">
+              <i className="las la-camera text-xl text-blue-500 mr-2"></i>
+              <span className="font-semibold">Cover Image</span>
             </div>
-            <div className="p-4  flex justify-between items-center space-x-4 rounded-lg">
-              <span>Monday - Thursday</span>
-              <span>$199</span>
+            <img src={coverImage} alt="Cover" className="rounded shadow max-h-48 w-auto mx-auto" />
+          </div>
+        )}
+        {/* Work Images */}
+        {workImages.length > 0 && (
+          <div>
+            <div className="flex items-center mb-2">
+              <i className="las la-images text-xl text-green-500 mr-2"></i>
+              <span className="font-semibold">Work Images</span>
             </div>
-            <div className="p-4 bg-neutral-100 dark:bg-neutral-800 flex justify-between items-center space-x-4 rounded-lg">
-              <span>Friday - Sunday</span>
-              <span>$219</span>
-            </div>
-            <div className="p-4 flex justify-between items-center space-x-4 rounded-lg">
-              <span>Rent by month</span>
-              <span>-8.34 %</span>
-            </div>
-            <div className="p-4 bg-neutral-100 dark:bg-neutral-800 flex justify-between items-center space-x-4 rounded-lg">
-              <span>Minimum number of nights</span>
-              <span>1 night</span>
-            </div>
-            <div className="p-4 flex justify-between items-center space-x-4 rounded-lg">
-              <span>Max number of nights</span>
-              <span>90 nights</span>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {workImages.map((img: string, idx: number) => (
+                <img key={idx} src={img} alt={`Work ${idx + 1}`} className="rounded shadow max-h-40 w-auto mx-auto" />
+              ))}
             </div>
           </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderSectionPricing = () => {
+    if (!service) return null;
+    const currency = service.currency;
+    const hourlyRate = service.hourly_rate;
+    const weekendRate = service.weekend_rate;
+    const bulkDiscount = service.bulk_discount;
+    if (!currency && !hourlyRate && !weekendRate && !bulkDiscount) return null;
+    return (
+      <div className="listingSection__wrap !space-y-0 p-4 bg-gray-50">
+        <h2 className="text-2xl font-semibold mb-2">Service Pricing</h2>
+        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700 mb-2"></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {currency && (
+            <div className="flex items-center p-3 rounded-lg bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700">
+              <i className="las la-coins text-2xl text-yellow-500 mr-3"></i>
+              <span className="font-medium flex-1">Currency:</span>
+              <span className="font-semibold">{currency}</span>
+            </div>
+          )}
+          {hourlyRate && (
+            <div className="flex items-center p-3 rounded-lg bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700">
+              <i className="las la-dollar-sign text-2xl text-green-500 mr-3"></i>
+              <span className="font-medium flex-1">Hourly Rate:</span>
+              <span className="font-semibold">{hourlyRate} {currency}</span>
+            </div>
+          )}
+          {weekendRate && (
+            <div className="flex items-center p-3 rounded-lg bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700">
+              <i className="las la-calendar-week text-2xl text-blue-500 mr-3"></i>
+              <span className="font-medium flex-1">Weekend Rate:</span>
+              <span className="font-semibold">{weekendRate} {currency}</span>
+            </div>
+          )}
+          {bulkDiscount && (
+            <div className="flex items-center p-3 rounded-lg bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700">
+              <i className="las la-percent text-2xl text-purple-500 mr-3"></i>
+              <span className="font-medium flex-1">Bulk Discount:</span>
+              <span className="font-semibold">{bulkDiscount}%</span>
+            </div>
+          )}
         </div>
       </div>
     );
   };
 
   const renderSection5 = () => {
+    if (!service) return null;
+    // Get expert name, service name, and city
+    const expertName = service.author?.displayName || service.expert_name || '-';
+    const serviceName = service.selected_service || service.listingCategory?.name || '-';
+    const city = service.city || '-';
     return (
-      <div className="listingSection__wrap">
+      <div className="listingSection__wrap !space-y-0 p-4 bg-gray-50">
         {/* HEADING */}
-        <h2 className="text-2xl font-semibold">Host Information</h2>
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
-
-        {/* host */}
-        <div className="flex items-center space-x-4">
-          <Avatar
-            hasChecked
-            hasCheckedClass="w-4 h-4 -top-0.5 right-0.5"
-            sizeClass="h-14 w-14"
-            radius="rounded-full"
-          />
-          <div>
-            <a className="block text-xl font-medium" href="##">
-              Kevin Francis
-            </a>
-            <div className="mt-1.5 flex items-center text-sm text-neutral-500 dark:text-neutral-400">
-              <StartRating />
-              <span className="mx-2">·</span>
-              <span> 12 places</span>
-            </div>
+        <h2 className="text-2xl font-semibold mb-2">Expertise & Experience</h2>
+        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700 mb-2"></div>
+        <div className="flex items-center space-x-8 mt-2">
+          {/* Years of Experience */}
+          <div className="flex items-center space-x-2">
+            <i className="las la-briefcase text-3xl text-blue-500"></i>
+            <span className="font-[18px]">{service.years_of_experience} years</span>
+          </div>
+          {/* Expertise Level */}
+          <div className="flex items-center space-x-2">
+            
+            {/* <span className="font-medium">{service.expertise_level }</span> */}
           </div>
         </div>
-
-        {/* desc */}
-        <span className="block text-neutral-6000 dark:text-neutral-300">
-          Providing lake views, The Symphony 9 Tam Coc in Ninh Binh provides
-          accommodation, an outdoor swimming pool, a bar, a shared lounge, a
-          garden and barbecue facilities...
+        <span className="block text-xl dark:text-neutral-300 mt-4">
+          {service.expertise_level}
         </span>
-
-        {/* info */}
-        <div className="block text-neutral-500 dark:text-neutral-400 space-y-2.5">
-          <div className="flex items-center space-x-3">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-              />
-            </svg>
-            <span>Joined in March 2016</span>
-          </div>
-          <div className="flex items-center space-x-3">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
-              />
-            </svg>
-            <span>Response rate - 100%</span>
-          </div>
-          <div className="flex items-center space-x-3">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-
-            <span>Fast response - within a few hours</span>
-          </div>
-        </div>
-
-        {/* == */}
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
-        <div>
-          <ButtonSecondary href="/author">See host profile</ButtonSecondary>
-        </div>
       </div>
     );
   };
 
   const renderSection6 = () => {
     return (
-      <div className="listingSection__wrap">
+      <div className="listingSection__wrap !space-y-0 p-4 bg-gray-100">
         {/* HEADING */}
-        <h2 className="text-2xl font-semibold">Reviews (23 reviews)</h2>
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
+        <h2 className="text-2xl font-semibold mb-2">Reviews (23 reviews)</h2>
+        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700 mb-2"></div>
 
         {/* Content */}
         <div className="space-y-5">
@@ -425,15 +436,15 @@ const StayDetailPageContainer: FC<{}> = () => {
 
   const renderSection7 = () => {
     return (
-      <div className="listingSection__wrap">
+      <div className="listingSection__wrap !space-y-0 p-4 bg-gray-100">
         {/* HEADING */}
         <div>
-          <h2 className="text-2xl font-semibold">Location</h2>
-          <span className="block mt-2 text-neutral-500 dark:text-neutral-400">
+          <h2 className="text-2xl font-semibold mb-2">Location</h2>
+          <span className="block mt-1 text-neutral-500 dark:text-neutral-400">
             San Diego, CA, United States of America (SAN-San Diego Intl.)
           </span>
         </div>
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700" />
+        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700 mb-2" />
 
         {/* MAP */}
         <div className="aspect-w-5 aspect-h-5 sm:aspect-h-3 ring-1 ring-black/10 rounded-xl z-0">
@@ -455,10 +466,10 @@ const StayDetailPageContainer: FC<{}> = () => {
 
   const renderSection8 = () => {
     return (
-      <div className="listingSection__wrap">
+      <div className="listingSection__wrap !space-y-0 p-4 bg-gray-100">
         {/* HEADING */}
-        <h2 className="text-2xl font-semibold">Things to know</h2>
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700" />
+        <h2 className="text-2xl font-semibold mb-2">Things to know</h2>
+        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700 mb-2" />
 
         {/* CONTENT */}
         <div>
@@ -508,102 +519,66 @@ const StayDetailPageContainer: FC<{}> = () => {
   };
 
   const renderSidebar = () => {
+    if (!service) return null;
+    const price =
+      service.hourly_rate && parseFloat(service.hourly_rate) !== 0
+        ? parseFloat(service.hourly_rate)
+        : service.price && parseFloat(service.price) !== 0
+          ? parseFloat(service.price)
+          : 0;
+    const currency = service.currency || "PKR";
+
     return (
       <div className="listingSectionSidebar__wrap shadow-xl">
         {/* PRICE */}
-        <div className="flex justify-between">
-          <span className="text-3xl font-semibold">
-            $119
-            <span className="ml-1 text-base font-normal text-neutral-500 dark:text-neutral-400">
-              /night
-            </span>
-          </span>
-          <StartRating />
-        </div>
-
-        {/* FORM */}
-        <form className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl ">
-          <StayDatesRangeInput className="flex-1 z-[11]" />
-          <div className="w-full border-b border-neutral-200 dark:border-neutral-700"></div>
-          <GuestsInput className="flex-1" />
-        </form>
-
-        {/* SUM */}
-        <div className="flex flex-col space-y-4">
-          <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-            <span>$119 x 3 night</span>
-            <span>$357</span>
+        {price > 0 && (
+          <div className="mb-2 text-center text-2xl font-bold text-blue-700">
+            {currency} {price.toLocaleString()}
           </div>
-          <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-            <span>Service charge</span>
-            <span>$0</span>
-          </div>
-          <div className="border-b border-neutral-200 dark:border-neutral-700"></div>
-          <div className="flex justify-between font-semibold">
-            <span>Total</span>
-            <span>$199</span>
-          </div>
-        </div>
+        )}
 
-        {/* SUBMIT */}
-        <ButtonPrimary href={"/checkout"}>Reserve</ButtonPrimary>
+        {/* Selected Slot */}
+        {selectedSlot && (
+          <div className="mb-2 text-center text-blue-700 font-semibold">
+            Selected Slot: {selectedSlot}
+          </div>
+        )}
+
+        {/* Reserve Button */}
+        <button
+          className="w-full py-3 bg-blue-600 text-white rounded-2xl font-semibold mt-4 hover:bg-blue-700 transition"
+          onClick={() => navigate('/checkout', { state: { service, selectedSlot } })}
+          disabled={!selectedSlot}
+        >
+          Reserve
+        </button>
       </div>
     );
   };
 
   return (
     <div className="nc-ListingStayDetailPage">
-      {/*  HEADER */}
-      <header className="rounded-md sm:rounded-xl">
-        <div className="relative grid grid-cols-3 sm:grid-cols-4 gap-1 sm:gap-2">
-          <div
-            className="col-span-2 row-span-3 sm:row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer "
-            onClick={handleOpenModalImageGallery}
-          >
+      {/* Dynamic Image Gallery */}
+      <div className="mb-8">
+        <div className="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
+          {allImages.map((img, idx) => (
             <img
-              className="absolute inset-0 object-cover rounded-md sm:rounded-xl w-full h-full"
-              src={PHOTOS[0]}
-              alt=""
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
+              key={idx}
+              src={img}
+              alt={`Service image ${idx + 1}`}
+              className="w-full mb-4 rounded-xl shadow-md cursor-pointer transition-transform duration-300 hover:scale-105"
+              style={{
+                // Randomize minHeight for a dynamic look
+                minHeight: 180 + (idx % 3) * 40,
+                maxHeight: 320,
+                objectFit: "cover",
+                objectPosition: "center",
+              }}
+              onClick={() => handleImageClick(img)}
             />
-            <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity"></div>
-          </div>
-          {PHOTOS.filter((_, i) => i >= 1 && i < 5).map((item, index) => (
-            <div
-              key={index}
-              className={`relative rounded-md sm:rounded-xl overflow-hidden ${
-                index >= 3 ? "hidden sm:block" : ""
-              }`}
-            >
-              <div className="aspect-w-4 aspect-h-3 sm:aspect-w-6 sm:aspect-h-5">
-                <img
-                  className="absolute inset-0 object-cover rounded-md sm:rounded-xl w-full h-full"
-                  src={item || ""}
-                  alt=""
-                  sizes="400px"
-                />
-              </div>
-
-              {/* OVERLAY */}
-              <div
-                className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity cursor-pointer"
-                onClick={handleOpenModalImageGallery}
-              />
-            </div>
           ))}
-
-          <button
-            className="absolute hidden md:flex md:items-center md:justify-center left-3 bottom-3 px-4 py-2 rounded-xl bg-neutral-100 text-neutral-500 hover:bg-neutral-200 z-10"
-            onClick={handleOpenModalImageGallery}
-          >
-            <Squares2X2Icon className="w-5 h-5" />
-            <span className="ml-2 text-neutral-800 text-sm font-medium">
-              Show all photos
-            </span>
-          </button>
         </div>
-      </header>
-
+      </div>
       {/* MAIN */}
       <main className=" relative z-10 mt-11 flex flex-col lg:flex-row ">
         {/* CONTENT */}
@@ -612,11 +587,15 @@ const StayDetailPageContainer: FC<{}> = () => {
           {renderSection2()}
           {renderSection3()}
           {renderSection4()}
-          <SectionDateRange />
+          {renderSectionMap()}
+          {renderSectionAttributes()}
+          {renderSectionWorkImages()}
+          {renderSectionPricing()}
+          {/* <SectionDateRange /> */}
           {renderSection5()}
-          {renderSection6()}
-          {renderSection7()}
-          {renderSection8()}
+          {/* {renderSection6()} */}
+          
+          
         </div>
 
         {/* SIDEBAR */}
@@ -624,6 +603,48 @@ const StayDetailPageContainer: FC<{}> = () => {
           <div className="sticky top-28">{renderSidebar()}</div>
         </div>
       </main>
+      <Transition appear show={!!modalImg} as={Fragment}>
+        <Dialog as="div" className="relative z-50" onClose={closeModal}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-70" />
+          </Transition.Child>
+          <div className="fixed inset-0 flex items-center justify-center p-4">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <Dialog.Panel className="bg-white rounded-xl shadow-xl p-2 max-w-3xl w-full flex justify-center items-center">
+                <img
+                  src={modalImg!}
+                  alt="Enlarged"
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "80vh",
+                    width: "auto",
+                    height: "auto",
+                    display: "block",
+                    margin: "0 auto"
+                  }}
+                  className="rounded-lg"
+                />
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </Dialog>
+      </Transition>
     </div>
   );
 };

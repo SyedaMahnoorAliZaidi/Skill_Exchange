@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import Header3 from "components/Header/Header3";
 import { PathName } from "routers/types";
-import PageHome2 from "containers/PageHome/PageHome2";
+import PageHome2 from "containers/LandingPage/landingpage";
 import LandingPageHeader from "components/LandingPageHeader/landingPageHeader"
 
 const SiteHeader = () => {

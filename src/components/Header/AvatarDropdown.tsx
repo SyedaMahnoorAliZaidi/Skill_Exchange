@@ -14,27 +14,23 @@ import Avatar from "shared/Avatar/Avatar";
 const solutions = [
   {
     name: "Account",
-    href: "/author",
+    href: "/account",
     icon: UserCircleIcon,
   },
  
   {
-    name: "Booking",
-    href: "##",
+    name: "My Bookings",
+    href: "/customer-bookings",
     icon: HomeIcon,
   },
 ];
 
 const solutionsFoot = [
-  {
-    name: "Help",
-    href: "##",
-    icon: LifebuoyIcon,
-  },
+  
 
   {
     name: "Logout",
-    href: "##",
+    href: "/",
     icon: ArrowRightOnRectangleIcon,
   },
 ];
