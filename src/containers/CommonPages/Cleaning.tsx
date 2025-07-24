@@ -69,7 +69,7 @@ const Cleaning: React.FC = () => {
   };
 
   const handleCardClick = (service: CleaningService) => {
-    navigate("/expert-service-detail", { state: { service } });
+    navigate("/customer-service-detail", { state: { service } });
   };
 
   const filteredServices = services.filter(service => {

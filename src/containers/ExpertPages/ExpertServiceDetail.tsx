@@ -627,11 +627,11 @@ const StayDetailPageContainer: FC<{}> = () => {
             {currency} {price.toLocaleString()}
           </div>
         )}
-
-        {/* Selected Slot */}
+<h1>gyuijokp</h1>
+        Selected Slot
        
 
-        {/* Reserve Button */}
+        Reserve Button
 
       </div>
     );

@@ -485,6 +485,10 @@ function PageHome2() {
         {/* SECTION2 */}
         <SectionOurFeatures type="type2" rightImg={rightImgPng} />
 
+
+//
+          
+
         {/* SECTION */}
         <SectionDowloadApp />
 

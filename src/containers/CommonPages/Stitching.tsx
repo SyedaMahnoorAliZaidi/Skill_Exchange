@@ -99,7 +99,7 @@ const Stitching: React.FC = () => {
   };
 
   const handleCardClick = (service: StitchingService) => {
-    navigate("/expert-service-detail", { state: { service } });
+    navigate("/customer-service-detail", { state: { service } });
   };
 
   const filteredServices = services.filter(service => {

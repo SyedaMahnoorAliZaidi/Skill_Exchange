@@ -88,7 +88,7 @@ const Carpentry: React.FC = () => {
   };
 
   const handleCardClick = (service: CarpentryService) => {
-    navigate("/expert-service-detail", { state: { service } });
+    navigate("/customer-service-detail", { state: { service } });
   };
 
   const filteredServices = services.filter(service => {
