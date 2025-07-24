@@ -18,7 +18,7 @@ const PageAddListing3: FC<PageAddListing3Props> = () => {
       nextHref="/add-listing-5"
     >
       <>
-        <AdminHeader/>
+        
         <h2 className="text-2xl font-semibold">Skill</h2>
         <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
         {/* FORM */}

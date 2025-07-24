@@ -45,6 +45,35 @@ function parseTimeRangeTo24Hour(timeRange: string): string | null {
   return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:00`;
 }
 
+// Add this utility function near the top, after imports or before your component
+function normalizeTimeSlot(slot: string): string {
+  // Already in HH:MM:SS
+  if (/^\d{2}:\d{2}:\d{2}$/.test(slot)) return slot;
+  // HH:MM
+  if (/^\d{2}:\d{2}$/.test(slot)) return `${slot}:00`;
+  // "6:30 PM" or "6:30PM" or "6:30 pm"
+  const match = slot.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (match) {
+    let [_, h, m, period] = match;
+    let hour = parseInt(h, 10);
+    if (period.toUpperCase() === "PM" && hour !== 12) hour += 12;
+    if (period.toUpperCase() === "AM" && hour === 12) hour = 0;
+    return `${hour.toString().padStart(2, "0")}:${m}:${"00"}`;
+  }
+  // "9am-11am", "2:30pm-4:30pm", etc.
+  const range = slot.match(/^\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)\s*-\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)\s*$/i);
+  if (range) {
+    let hour = parseInt(range[1], 10);
+    let minute = range[2] ? parseInt(range[2], 10) : 0;
+    const period = range[3].toLowerCase();
+    if (period === 'pm' && hour !== 12) hour += 12;
+    if (period === 'am' && hour === 12) hour = 0;
+    return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:00`;
+  }
+  // fallback: return as is
+  return slot;
+}
+
 const StayDetailPageContainer: FC<{}> = () => {
   // All hooks at the top!
   const [reviews, setReviews] = useState<any[]>([]);
@@ -110,180 +139,185 @@ const StayDetailPageContainer: FC<{}> = () => {
     setSelectedDate(date);
   };
 
+
+
+
+
+
   // Handle reserve button click
-  const handleReserve = async () => {
-    if (!selectedDate) {
-      alert("Please select a date first");
+//  const handleReserve = async () => {
+//   if (!selectedDate) {
+//     alert("Please select a date first");
+//     return;
+//   }
+
+//   if (!selectedSlot) {
+//     alert("Please select a time slot first");
+//     return;
+//   }
+
+//   setReserving(true);
+
+//   try {
+//     const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
+//     const accessToken = localStorage.getItem("accessToken");
+
+//     let timeSlotFormatted = selectedSlot.trim();
+
+//     // Convert "6:30 PM" to "18:30:00"
+//     if (/^\d{1,2}:\d{2}\s*(AM|PM)$/i.test(timeSlotFormatted)) {
+//       const [time, period] = timeSlotFormatted.split(' ');
+//       let [hours, minutes] = time.split(':');
+//       let hour24 = parseInt(hours, 10);
+
+//       if (period.toUpperCase() === 'PM' && hour24 !== 12) {
+//         hour24 += 12;
+//       } else if (period.toUpperCase() === 'AM' && hour24 === 12) {
+//         hour24 = 0;
+//       }
+
+//       timeSlotFormatted = `${hour24.toString().padStart(2, '0')}:${minutes.padStart(2, '0')}:00`;
+//     }
+//     // If already in HH:MM or HH:MM:SS
+//     else if (/^\d{1,2}:\d{2}$/.test(timeSlotFormatted)) {
+//       let [hours, minutes] = timeSlotFormatted.split(':');
+//       timeSlotFormatted = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00`;
+//     } else if (/^\d{1,2}:\d{2}:\d{2}$/.test(timeSlotFormatted)) {
+//       let [hours, minutes, seconds] = timeSlotFormatted.split(':');
+//       timeSlotFormatted = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:${seconds.padStart(2, '0')}`;
+//     } else {
+//       alert('Invalid time slot format. Please select a valid slot.');
+//       setReserving(false);
+//       return;
+//     }
+
+//     const reservationData = {
+//       service_id: service.id,
+//       date: selectedDate,               // e.g., "2025-07-26"
+//       time_slot: timeSlotFormatted,     // e.g., "18:30:00"
+//       amount: parseFloat(service.hourly_rate || service.price || "0")
+//     };
+
+//     console.log('Reservation payload:', reservationData);
+
+//     const response = await fetch('http://localhost:8000/api/create-reservation/', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Authorization': `Bearer ${accessToken}`
+//       },
+//       body: JSON.stringify(reservationData)
+//     });
+
+//     if (response.ok) {
+//       const result = await response.json();
+//       console.log('Reservation created successfully:', result);
+      
+//       // ✅ Show success alert
+//       alert('Booking created successfully!');
+      
+//       // ✅ Redirect to /customer-home
+//       navigate('/customer-home');
+//     } else {
+//       const errorData = await response.json().catch(() => null);
+//       console.error('Failed to create reservation:', errorData);
+//       alert(`Failed to create reservation: ${JSON.stringify(errorData)}`);
+//     }
+
+//   } catch (error) {
+//     console.error('Error creating reservation:', error);
+//     alert('Failed to create reservation. Please try again.');
+//   } finally {
+//     setReserving(false);
+//   }
+// };
+
+const handleReserve = async () => {
+  if (!selectedDate) {
+    alert("Please select a date first");
+    return;
+  }
+
+  if (!selectedSlot) {
+    alert("Please select a time slot first");
+    return;
+  }
+
+  setReserving(true);
+
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+
+    let timeSlotFormatted = selectedSlot.trim();
+
+    // Convert "6:30 PM" to "18:30:00"
+    if (/^\d{1,2}:\d{2}\s*(AM|PM)$/i.test(timeSlotFormatted)) {
+      const [time, period] = timeSlotFormatted.split(' ');
+      let [hours, minutes] = time.split(':');
+      let hour24 = parseInt(hours, 10);
+
+      if (period.toUpperCase() === 'PM' && hour24 !== 12) {
+        hour24 += 12;
+      } else if (period.toUpperCase() === 'AM' && hour24 === 12) {
+        hour24 = 0;
+      }
+
+      timeSlotFormatted = `${hour24.toString().padStart(2, '0')}:${minutes.padStart(2, '0')}:00`;
+    } 
+    // Already HH:MM → add seconds
+    else if (/^\d{1,2}:\d{2}$/.test(timeSlotFormatted)) {
+      let [hours, minutes] = timeSlotFormatted.split(':');
+      timeSlotFormatted = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00`;
+    } 
+    // Already HH:MM:SS → keep as is
+    else if (/^\d{1,2}:\d{2}:\d{2}$/.test(timeSlotFormatted)) {
+      let [hours, minutes, seconds] = timeSlotFormatted.split(':');
+      timeSlotFormatted = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:${seconds.padStart(2, '0')}`;
+    } 
+    else {
+      alert('Invalid time slot format. Please select a valid slot.');
+      setReserving(false);
       return;
     }
-    
-    if (!selectedSlot) {
-      alert("Please select a time slot first");
-      return;
-    }
-    
-    setReserving(true);
-    
-    try {
-      // Get user info from localStorage
-      const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
-      const accessToken = localStorage.getItem("accessToken");
-      
-      // Convert time slot string to proper format
-      let timeSlotFormatted = selectedSlot.trim();
 
-      // If it's a range like "9am-11am", extract the start time
-      if (/^\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)\s*-\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)\s*$/i.test(timeSlotFormatted)) {
-        const parsed = parseTimeRangeTo24Hour(timeSlotFormatted);
-        if (!parsed) {
-          alert('Invalid time slot format. Please select a valid slot.');
-          setReserving(false);
-          return;
-        }
-        timeSlotFormatted = parsed;
-      }
-      // If it's in 12-hour format (e.g., "2:30 PM"), convert to 24-hour
-      else if (/^\\d{1,2}:\\d{2}\\s*(AM|PM)$/i.test(timeSlotFormatted)) {
-        const [time, period] = timeSlotFormatted.split(' ');
-        let [hours, minutes] = time.split(':');
-        let hour24 = parseInt(hours, 10);
-
-        if (period.toUpperCase() === 'PM' && hour24 !== 12) {
-          hour24 += 12;
-        } else if (period.toUpperCase() === 'AM' && hour24 === 12) {
-          hour24 = 0;
-        }
-        timeSlotFormatted = `${hour24.toString().padStart(2, '0')}:${minutes.padStart(2, '0')}:00`;
-      }
-      // If it's in HH:MM format, add seconds
-      else if (/^\\d{1,2}:\\d{2}$/.test(timeSlotFormatted)) {
-        let [hours, minutes] = timeSlotFormatted.split(':');
-        timeSlotFormatted = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00`;
-      }
-      // If it's in HH:MM:SS format, zero-pad
-      else if (/^\\d{1,2}:\\d{2}:\\d{2}$/.test(timeSlotFormatted)) {
-        let [hours, minutes, seconds] = timeSlotFormatted.split(':');
-        timeSlotFormatted = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:${seconds.padStart(2, '0')}`;
-      } else {
-        // fallback: invalid format
-        alert('Invalid time slot format. Please select a valid slot.');
-        setReserving(false);
-        return;
-      }
-      
-      // Prepare reservation data according to API specification
-      const reservationData = {
-        service_id: service.id,
-        date: selectedDate,
-        time_slot: timeSlotFormatted,
-        amount: parseFloat(service.hourly_rate || service.price || "0")
-      };
-      
-      console.log('Original time slot:', selectedSlot);
-      console.log('Formatted time slot:', timeSlotFormatted);
-      console.log('Reservation data:', reservationData);
-      console.log('Service ID:', service.id);
-      console.log('Service object:', service);
-      
-      // Call the create-reservation API
-      const response = await fetch('http://localhost:8000/api/create-reservation/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
-        },
-        body: JSON.stringify(reservationData)
-      });
-      
-      if (response.ok) {
-        const result = await response.json();
-        console.log('Reservation created successfully:', result);
-        
-        // Prepare data to pass to pay-done page
-        const bookingData = {
-          service: {
-            id: service.id,
-            name: service.selected_service || service.listingCategory?.name,
-            description: service.description,
-            hourly_rate: service.hourly_rate,
-            currency: service.currency || "PKR",
-            city: service.city,
-            expert_name: expertInfo?.full_name || service.expert_name,
-            cover_image: service.cover_image,
-            time_slots: service.time_slots || service.originalData?.time_slots
-          },
-          booking: {
-            selected_date: selectedDate,
-            selected_slot: selectedSlot,
-            booking_date: selectedDate,
-            booking_time: selectedSlot,
-            status: "pending"
-          },
-          user: {
-            id: userInfo.id,
-            full_name: userInfo.full_name,
-            email: userInfo.email,
-            phone: userInfo.phone,
-            address: userInfo.address
-          },
-          expert: expertInfo
-        };
-        
-        // Navigate to pay-done page with booking data
-        navigate("/pay-done", { 
-          state: { 
-            bookingData,
-            fromServiceDetail: true 
-          } 
-        });
-      } else {
-        console.error('Response status:', response.status);
-        console.error('Response headers:', response.headers);
-        
-        // Try to parse response as JSON, but handle HTML responses
-        let errorData;
-        const contentType = response.headers.get('content-type');
-        
-        if (contentType && contentType.includes('application/json')) {
-          try {
-            errorData = await response.json();
-            console.error('Failed to create reservation:', errorData);
-            
-            // Show more detailed error information
-            let errorMessage = 'Failed to create reservation: ';
-            if (errorData.error) {
-              errorMessage += errorData.error;
-            } else if (errorData.time_slot) {
-              errorMessage += `Time slot error: ${errorData.time_slot.join(', ')}`;
-            } else if (errorData.date) {
-              errorMessage += `Date error: ${errorData.date.join(', ')}`;
-            } else if (errorData.service_id) {
-              errorMessage += `Service error: ${errorData.service_id.join(', ')}`;
-            } else if (errorData.amount) {
-              errorMessage += `Amount error: ${errorData.amount.join(', ')}`;
-            } else {
-              errorMessage += 'Unknown error occurred';
-            }
-            
-            alert(errorMessage);
-          } catch (jsonError) {
-            console.error('Failed to parse JSON response:', jsonError);
-            alert(`Server error (${response.status}): Unable to parse server response`);
-          }
-        } else {
-          // Handle HTML responses (server errors)
-          const textResponse = await response.text();
-          console.error('Server returned HTML instead of JSON:', textResponse.substring(0, 200));
-          alert(`Server error (${response.status}): Please check your backend logs for more details`);
-        }
-      }
-          } catch (error) {
-        console.error('Error creating reservation:', error);
-        alert('Failed to create reservation. Please try again.');
-      } finally {
-        setReserving(false);
-      }
+    // ✅ Build payload matching backend serializer
+    const reservationData = {
+      service_id: service.id,
+      date: selectedDate,                // e.g., "2025-07-26"
+      time_slot: timeSlotFormatted,      // e.g., "18:30:00"
+      amount: parseFloat(service.hourly_rate || service.price || "0")
     };
+
+    console.log('Reservation payload:', reservationData);
+
+    const response = await fetch('http://localhost:8000/api/create-reservation/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`
+      },
+      body: JSON.stringify(reservationData)
+    });
+
+    if (response.ok) {
+      alert('Booking created successfully!');
+      navigate('/customer-home');
+    } else {
+      const errorData = await response.json().catch(() => null);
+      console.error('Failed to create reservation:', errorData);
+      alert(`Failed to create reservation: ${JSON.stringify(errorData)}`);
+    }
+
+  } catch (error) {
+    console.error('Error creating reservation:', error);
+    alert('Failed to create reservation. Please try again.');
+  } finally {
+    setReserving(false);
+  }
+};
+
+
+
 
   // Fetch expert info when component mounts - moved before early return
   React.useEffect(() => {
@@ -466,6 +500,9 @@ const StayDetailPageContainer: FC<{}> = () => {
     );
   };
 
+
+
+  
   const renderSection2 = () => {
     if (!service) return null;
     return (
@@ -601,20 +638,23 @@ const StayDetailPageContainer: FC<{}> = () => {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-5 mb-5">
           {timeSlots.length > 0 ? (
-            timeSlots.map((slot, idx) => (
-              <button
-                key={idx}
-                onClick={() => handleSlotSelection(slot)}
-                className={`px-6 py-3 rounded-xl border text-lg font-semibold text-center shadow transition-colors
-                  ${selectedSlot === slot
-                    ? "bg-blue-600 text-white border-blue-600"
-                    : "bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100"}
-                `}
-                type="button"
-              >
-                {slot}
-              </button>
-            ))
+            timeSlots.map((slot, idx) => {
+              const normalizedSlot = normalizeTimeSlot(slot);
+              return (
+                <button
+                  key={idx}
+                  onClick={() => handleSlotSelection(normalizedSlot)}
+                  className={`px-6 py-3 rounded-xl border text-lg font-semibold text-center shadow transition-colors
+                    ${selectedSlot === slot
+                      ? "bg-blue-600 text-white border-blue-600"
+                      : "bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100"}
+                  `}
+                  type="button"
+                >
+                  {slot}
+                </button>
+              );
+            })
           ) : (
             <span className="text-neutral-400 col-span-full">No slots available</span>
           )}
@@ -903,129 +943,7 @@ const StayDetailPageContainer: FC<{}> = () => {
     );
   };
 
-  const renderSection6 = () => {
-    return (
-      <div className="listingSection__wrap !space-y-0 p-4 bg-gray-100">
-        {/* HEADING */}
-        <h2 className="text-2xl font-semibold mb-2">Reviews (23 reviews)</h2>
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700 mb-2"></div>
-
-        {/* Content */}
-        <div className="space-y-5">
-          <FiveStartIconForRate iconClass="w-6 h-6" className="space-x-0.5" />
-          <div className="relative">
-            <Input
-              fontClass=""
-              sizeClass="h-16 px-4 py-3"
-              rounded="rounded-3xl"
-              placeholder="Share your thoughts ..."
-            />
-            <ButtonCircle
-              className="absolute right-2 top-1/2 transform -translate-y-1/2"
-              size=" w-12 h-12 "
-            >
-              <ArrowRightIcon className="w-5 h-5" />
-            </ButtonCircle>
-          </div>
-        </div>
-
-        {/* comment */}
-        <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
-          <CommentListing className="py-8" />
-          <CommentListing className="py-8" />
-          <CommentListing className="py-8" />
-          <CommentListing className="py-8" />
-          <div className="pt-8">
-            <ButtonSecondary>View more 20 reviews</ButtonSecondary>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderSection7 = () => {
-    return (
-      <div className="listingSection__wrap !space-y-0 p-4 bg-gray-100">
-        {/* HEADING */}
-        <div>
-          <h2 className="text-2xl font-semibold mb-2">Location</h2>
-          <span className="block mt-1 text-neutral-500 dark:text-neutral-400">
-            San Diego, CA, United States of America (SAN-San Diego Intl.)
-          </span>
-        </div>
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700 mb-2" />
-
-        {/* MAP */}
-        <div className="aspect-w-5 aspect-h-5 sm:aspect-h-3 ring-1 ring-black/10 rounded-xl z-0">
-          <div className="rounded-xl overflow-hidden z-0">
-            <iframe
-              title="x"
-              width="100%"
-              height="100%"
-              loading="lazy"
-              allowFullScreen
-              referrerPolicy="no-referrer-when-downgrade"
-              src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAGVJfZMAKYfZ71nzL_v5i3LjTTWnCYwTY&q=Eiffel+Tower,Paris+France"
-            ></iframe>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderSection8 = () => {
-    return (
-      <div className="listingSection__wrap !space-y-0 p-4 bg-gray-100">
-        {/* HEADING */}
-        <h2 className="text-2xl font-semibold mb-2">Things to know</h2>
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700 mb-2" />
-
-        {/* CONTENT */}
-        <div>
-          <h4 className="text-lg font-semibold">Cancellation policy</h4>
-          <span className="block mt-3 text-neutral-500 dark:text-neutral-400">
-            Refund 50% of the booking value when customers cancel the room
-            within 48 hours after successful booking and 14 days before the
-            check-in time. <br />
-            Then, cancel the room 14 days before the check-in time, get a 50%
-            refund of the total amount paid (minus the service fee).
-          </span>
-        </div>
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700" />
-
-        {/* CONTENT */}
-        <div>
-          <h4 className="text-lg font-semibold">Check-in time</h4>
-          <div className="mt-3 text-neutral-500 dark:text-neutral-400 max-w-md text-sm sm:text-base">
-            <div className="flex space-x-10 justify-between p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg">
-              <span>Check-in</span>
-              <span>08:00 am - 12:00 am</span>
-            </div>
-            <div className="flex space-x-10 justify-between p-3">
-              <span>Check-out</span>
-              <span>02:00 pm - 04:00 pm</span>
-            </div>
-          </div>
-        </div>
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700" />
-
-        {/* CONTENT */}
-        <div>
-          <h4 className="text-lg font-semibold">Special Note</h4>
-          <div className="prose sm:prose">
-            <ul className="mt-3 text-neutral-500 dark:text-neutral-400 space-y-2">
-              <li>
-                Ban and I will work together to keep the landscape and
-                environment green and clean by not littering, not using
-                stimulants and respecting people around.
-              </li>
-              <li>Do not sing karaoke past 11:30</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    );
-  };
+ 
 
   const renderSidebar = () => {
     if (!service) return null;

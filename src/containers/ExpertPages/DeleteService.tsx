@@ -227,7 +227,7 @@ const DeleteService: React.FC = () => {
       <div key={service.id} className="relative group">
         <PropertyCardH
           className="h-full"
-          expertName={service.author.displayName || "Expert"}
+          expertName={service.title|| "Expert"}
           yearsExperience={typeof service.years_of_experience === "string" ? parseInt(service.years_of_experience) : (service.years_of_experience || 0)}
           price={typeof service.price === "string" ? parseFloat(service.price) : (service.price || 0)}
           image={

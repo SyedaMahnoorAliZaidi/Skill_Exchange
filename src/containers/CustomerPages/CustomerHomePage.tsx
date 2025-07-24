@@ -647,6 +647,13 @@ const CustomerHomePage: FC<CustomerHomePageProps> = ({ className = "" }) => {
             ]}
           />
 
+
+
+
+            <div className="relative py-16">
+          <BackgroundSection />
+          <SectionGridFeatureProperty />
+        </div>
           {/* SECTION */}
           {/* <div className="relative py-16">
             <BackgroundSection />
