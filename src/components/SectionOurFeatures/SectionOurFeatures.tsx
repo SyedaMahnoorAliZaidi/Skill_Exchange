@@ -32,27 +32,25 @@ const SectionOurFeatures: FC<SectionOurFeaturesProps> = ({
         <span className="uppercase text-sm text-gray-400 tracking-widest">
           BENnefits
         </span>
-        <h2 className="font-semibold text-4xl mt-5">Happening cities </h2>
+        <h2 className="font-semibold text-4xl mt-5">HAPPENING NEEDS </h2>
 
         <ul className="space-y-10 mt-16">
           <li className="space-y-4">
             <Badge name="Advertising" />
             <span className="block text-xl font-semibold">
-              Cost-effective advertising
+              Easy and Convenient
             </span>
             <span className="block mt-5 text-neutral-500 dark:text-neutral-400">
-              With a free listing, you can advertise your rental with no upfront
-              costs
+             Save time and money by finding the right service provider for your needs.
             </span>
           </li>
           <li className="space-y-4">
             <Badge color="green" name="Exposure " />
             <span className="block text-xl font-semibold">
-              Reach millions with Chisfis
+              Reach millions with TaskEase
             </span>
             <span className="block mt-5 text-neutral-500 dark:text-neutral-400">
-              Millions of people are searching for unique places to stay around
-              the world
+            Connect with a wide range of service providers in your area.
             </span>
           </li>
           <li className="space-y-4">
@@ -61,8 +59,7 @@ const SectionOurFeatures: FC<SectionOurFeaturesProps> = ({
               Secure and simple
             </span>
             <span className="block mt-5 text-neutral-500 dark:text-neutral-400">
-              A Holiday Lettings listing gives you a secure and easy way to take
-              bookings and payments online
+              Quality service providers at your fingertips.
             </span>
           </li>
         </ul>

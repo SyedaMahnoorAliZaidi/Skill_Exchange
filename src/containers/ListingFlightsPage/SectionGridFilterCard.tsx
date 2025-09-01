@@ -6,6 +6,7 @@ import ButtonPrimary from "shared/Button/ButtonPrimary";
 
 export interface SectionGridFilterCardProps {
   className?: string;
+  data: any[];
 }
 
 const DEMO_DATA: FlightCardProps["data"][] = [

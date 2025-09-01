@@ -42,21 +42,42 @@ const carsImgs = [
   car16,
 ];
 
+// const DEMO_STAY_LISTINGS = __stayListing.map((post, index): StayDataType => {
+//   //  ##########  GET CATEGORY BY CAT ID ######## //
+//   const category = DEMO_STAY_CATEGORIES.filter(
+//     (taxonomy) => taxonomy.id === post.listingCategoryId
+//   )[0];
+
+//   return {
+//     ...post,
+//     id: `stayListing_${index}_`,
+//     saleOff: !index ? "-20% today" : post.saleOff,
+//     isAds: !index ? true : post.isAds,
+//     author: DEMO_AUTHORS.filter((user) => user.id === post.authorId)[0],
+//     listingCategory: category,
+//   };
+// });
+
+
 const DEMO_STAY_LISTINGS = __stayListing.map((post, index): StayDataType => {
-  //  ##########  GET CATEGORY BY CAT ID ######## //
-  const category = DEMO_STAY_CATEGORIES.filter(
+  const category = DEMO_STAY_CATEGORIES.find(
     (taxonomy) => taxonomy.id === post.listingCategoryId
-  )[0];
+  );
 
   return {
     ...post,
     id: `stayListing_${index}_`,
     saleOff: !index ? "-20% today" : post.saleOff,
     isAds: !index ? true : post.isAds,
-    author: DEMO_AUTHORS.filter((user) => user.id === post.authorId)[0],
-    listingCategory: category,
+    author: DEMO_AUTHORS.find((user) => user.id === post.authorId)!,
+    listingCategory: category!,
+    maxGuests: post.maxGuests ?? 2,          // ✅ Required field
+    bedrooms: post.bedrooms ?? 1,            // ✅ Required field
+    bathrooms: post.bathrooms ?? 1,          // ✅ Required field
+    map: post.map ?? { lat: 0, lng: 0 },     // ✅ Required field
   };
 });
+
 
 const DEMO_EXPERIENCES_LISTINGS = __experiencesListing.map(
   (post, index): ExperiencesDataType => {

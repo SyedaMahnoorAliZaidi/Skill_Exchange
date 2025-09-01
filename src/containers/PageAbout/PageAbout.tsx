@@ -8,6 +8,7 @@ import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
 import BackgroundSection from "components/BackgroundSection/BackgroundSection";
 import SectionHero from "./SectionHero";
 import SectionClientSay from "components/SectionClientSay/SectionClientSay";
+import Header3 from "components/Header/Header3";
 
 export interface PageAboutProps {
   className?: string;
@@ -15,12 +16,14 @@ export interface PageAboutProps {
 
 const PageAbout: FC<PageAboutProps> = ({ className = "" }) => {
   return (
+    <>
+    <Header3/>
     <div
       className={`nc-PageAbout overflow-hidden relative ${className}`}
       data-nc-id="PageAbout"
     >
       <Helmet>
-        <title>About || Booking React Template</title>
+        <title>TaskEase</title>
       </Helmet>
 
       {/* ======== BG GLASS ======== */}
@@ -29,9 +32,9 @@ const PageAbout: FC<PageAboutProps> = ({ className = "" }) => {
       <div className="container py-16 lg:py-28 space-y-16 lg:space-y-28">
         <SectionHero
           rightImg={rightImg}
-          heading="👋 About Us."
+          heading="👋 Welcome to TaskEase, your go-to skill marketplace!"
           btnText=""
-          subHeading="We’re impartial and independent, and every day we create distinctive, world-class programmes and content which inform, educate and entertain millions of people in the around the world."
+          subHeading=" Our platform is designed to make it easy for you to find reliable experts—whether you need a plumber, electrician or any other service provider."
         />
 
         <SectionFounder />
@@ -45,6 +48,7 @@ const PageAbout: FC<PageAboutProps> = ({ className = "" }) => {
         <SectionSubscribe2 />
       </div>
     </div>
+    </>
   );
 };
 

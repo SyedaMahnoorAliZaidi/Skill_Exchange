@@ -6,39 +6,45 @@ import Checkbox from "shared/Checkbox/Checkbox";
 
 const defaultPropertyType: ClassOfProperties[] = [
   {
-    name: "Duplex House",
-    description: "Have a place to yourself",
+    name: "Tailor",
+    description: "Enjoy stiched clothes",
     checked: true,
   },
   {
-    name: "Ferme House",
-    description: "Have your own room and share some common spaces",
+    name: "Plumber",
+    description: "Have your own",
     checked: false,
   },
   {
-    name: "Chalet House",
+    name: "Beautician",
     description:
       "Have a private or shared room in a boutique hotel, hostel, and more",
     checked: false,
   },
   {
-    name: "Maison House",
+    name: "Electrician",
     description: "Stay in a shared space, like a common room",
     checked: false,
   },
 ];
 
 export interface PropertyTypeSelectProps {
-  onChange?: (data: any) => void;
+  value?: ClassOfProperties[];
+  onChange?: (data: ClassOfProperties[]) => void;
   fieldClassName?: string;
 }
 
 const PropertyTypeSelect: FC<PropertyTypeSelectProps> = ({
+  value,
   onChange,
   fieldClassName = "[ nc-hero-field-padding ]",
 }) => {
   const [typeOfProperty, setTypeOfProperty] =
-    React.useState<ClassOfProperties[]>(defaultPropertyType);
+    React.useState<ClassOfProperties[]>(value || defaultPropertyType);
+
+  React.useEffect(() => {
+    if (value) setTypeOfProperty(value);
+  }, [value]);
 
   let typeOfPropertyText = "";
   if (typeOfProperty && typeOfProperty.length > 0) {
@@ -65,11 +71,11 @@ const PropertyTypeSelect: FC<PropertyTypeSelectProps> = ({
             <div className="flex-1">
               <span className="block xl:text-lg font-semibold overflow-hidden">
                 <span className="line-clamp-1">
-                  {typeOfPropertyText || `Type`}
+                  {typeOfPropertyText || `Service`}
                 </span>
               </span>
               <span className="block mt-1 text-sm text-neutral-400 leading-none font-light ">
-                Property type
+                select expert
               </span>
             </div>
           </Popover.Button>

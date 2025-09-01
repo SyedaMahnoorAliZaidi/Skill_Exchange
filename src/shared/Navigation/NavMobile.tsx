@@ -1,152 +1,147 @@
 import React from "react";
 import ButtonClose from "shared/ButtonClose/ButtonClose";
-import Logo from "shared/Logo/Logo";
+import LogoLight from "images/dummy images/light.png";
+import LogoDark from "images/dummy images/dark.png";
 import { Disclosure } from "@headlessui/react";
 import { NavLink } from "react-router-dom";
-import { NavItemType } from "./NavigationItem";
-import { NAVIGATION_DEMO } from "data/navigation";
+// import { NavItemType } from "./NavigationItem";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
-import SocialsList from "shared/SocialsList/SocialsList";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import SwitchDarkMode from "shared/SwitchDarkMode/SwitchDarkMode";
-import LangDropdown from "components/Header/LangDropdown";
+import PageHome2 from "containers/LandingPage/landingpage";
 
-export interface NavMobileProps {
-  data?: NavItemType[];
-  onClickClose?: () => void;
-}
 
-const NavMobile: React.FC<NavMobileProps> = ({
-  data = NAVIGATION_DEMO,
-  onClickClose,
-}) => {
-  const _renderMenuChild = (item: NavItemType) => {
+
+export type NavItemType = {
+  id: string;
+  name: string;
+  href?: string; // href is optional
+  children?: NavItemType[]; // children is optional and is of the same type
+};
+
+
+
+
+const NavMobile: React.FC<{ onClickClose?: () => void }> = ({ onClickClose }) => {
+  // Detect dark mode using the 'dark' class on body or html
+  const [isDark, setIsDark] = React.useState(false);
+  React.useEffect(() => {
+    const checkDark = () => {
+      setIsDark(document.documentElement.classList.contains("dark") || document.body.classList.contains("dark"));
+    };
+    checkDark();
+    const observer = new MutationObserver(checkDark);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+  const navigation = [
+    { id: "1", name: "FAQ", href: "/customer-faq" },
+    { id: "2", name: "About Us", href: "/about" },
+    {
+      id: "3",
+      name: "Categories",
+      children: [
+        { id: "3.1", name: "Stitching", href: "/stitching" },
+        { id: "3.2", name: "Plumbing", href: "/plumbing" },
+        { id: "3.3", name: "Electrical", href: "/electrical" },
+        { id: "3.4", name: "Carpentry", href: "/carpentry" },
+        { id: "3.5", name: "Cleaning", href: "/cleaning" },
+        { id: "3.6", name: "Gardening", href: "/gardening" },
+        { id: "3.7", name: "Painting", href: "/painting" },
+        { id: "3.8", name: "Moving", href: "/moving" },
+        { id: "3.9", name: "Repair", href: "/repair" },
+        { id: "3.10", name: "Installation", href: "/installation" },
+        { id: "3.11", name: "Maintenance", href: "/maintenance" },
+      ],
+    },
+    
+   
+  ];
+  
+
+  const renderMenuChild = (item: NavItemType) => {
     return (
       <ul className="nav-mobile-sub-menu pl-6 pb-1 text-base">
-        {item.children?.map((i, index) => (
-          <Disclosure key={i.href + index} as="li">
+        {item.children?.map((i) => (
+          <Disclosure key={i.id} as="li">
             <NavLink
               end
-              to={{
-                pathname: i.href || undefined,
-              }}
+              to={i.href || "#"}
               className={({ isActive }) =>
                 `flex px-4 text-neutral-900 dark:text-neutral-200 text-sm font-medium rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 mt-0.5 ${
                   isActive ? "text-secondary" : ""
                 }`
               }
             >
-              <span
-                className={`py-2.5 pr-3 ${!i.children ? "block w-full" : ""}`}
-              >
+              <span className={`py-2.5 pr-3 ${!i.children ? "block w-full" : ""}`}>
                 {i.name}
               </span>
-              {i.children && (
-                <span
-                  className="flex-1 flex"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <Disclosure.Button
-                    as="span"
-                    className="py-2.5 flex justify-end flex-1"
-                  >
-                    <ChevronDownIcon
-                      className="ml-2 h-4 w-4 text-neutral-500"
-                      aria-hidden="true"
-                    />
-                  </Disclosure.Button>
-                </span>
-              )}
             </NavLink>
-            {i.children && (
-              <Disclosure.Panel>{_renderMenuChild(i)}</Disclosure.Panel>
-            )}
           </Disclosure>
         ))}
       </ul>
     );
   };
 
-  const _renderItem = (item: NavItemType, index: number) => {
-    return (
-      <Disclosure
-        key={item.id}
-        as="li"
-        className="text-neutral-900 dark:text-white"
-      >
-        <NavLink
-          end
-          className={({ isActive }) =>
-            `flex w-full px-4 font-medium uppercase tracking-wide text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg ${
-              isActive ? "text-secondary" : ""
-            }`
-          }
-          to={{
-            pathname: item.href || undefined,
-          }}
-        >
-          <span
-            className={`py-2.5 pr-3 ${!item.children ? "block w-full" : ""}`}
+  const renderItem = (item: NavItemType) => {
+    if (item.name === "Categories") {
+      // Render Categories without a link, but show the subcategories
+      return (
+        <Disclosure key={item.id} as="li" className="text-neutral-900 dark:text-white">
+          <div className="flex w-full px-4 font-medium uppercase tracking-wide text-sm">
+            <span className="py-2.5 pr-3">{item.name}</span>
+            <Disclosure.Button as="span" className="py-2.5 flex justify-end flex-1">
+              <ChevronDownIcon className="ml-2 h-4 w-4 text-neutral-500" aria-hidden="true" />
+            </Disclosure.Button>
+          </div>
+          {item.children && <Disclosure.Panel>{renderMenuChild(item)}</Disclosure.Panel>}
+        </Disclosure>
+      );
+    } else {
+      // Default behavior for other items
+      return (
+        <Disclosure key={item.id} as="li" className="text-neutral-900 dark:text-white">
+          <NavLink
+            end
+            to={item.href || "#"}
+            className={({ isActive }) =>
+              `flex w-full px-4 font-medium uppercase tracking-wide text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg ${
+                isActive ? "text-secondary" : ""
+              }`
+            }
           >
-            {item.name}
-          </span>
-          {item.children && (
-            <span className="flex-1 flex" onClick={(e) => e.preventDefault()}>
-              <Disclosure.Button
-                as="span"
-                className="py-2.5 flex items-center justify-end flex-1 "
-              >
-                <ChevronDownIcon
-                  className="ml-2 h-4 w-4 text-neutral-500"
-                  aria-hidden="true"
-                />
-              </Disclosure.Button>
+            <span className={`py-2.5 pr-3 ${!item.children ? "block w-full" : ""}`}>
+              {item.name}
             </span>
-          )}
-        </NavLink>
-        {item.children && (
-          <Disclosure.Panel>{_renderMenuChild(item)}</Disclosure.Panel>
-        )}
-      </Disclosure>
-    );
+            {item.children && (
+              <Disclosure.Button as="span" className="py-2.5 flex justify-end flex-1">
+                <ChevronDownIcon className="ml-2 h-4 w-4 text-neutral-500" aria-hidden="true" />
+              </Disclosure.Button>
+            )}
+          </NavLink>
+          {item.children && <Disclosure.Panel>{renderMenuChild(item)}</Disclosure.Panel>}
+        </Disclosure>
+      );
+    }
   };
+  
 
   return (
     <div className="overflow-y-auto w-full h-screen py-2 transition transform shadow-lg ring-1 dark:ring-neutral-700 bg-white dark:bg-neutral-900 divide-y-2 divide-neutral-100 dark:divide-neutral-800">
       <div className="py-6 px-5">
-        <Logo />
+        <img src={isDark ? LogoDark : LogoLight} alt="Logo" className="h-8" />
         <div className="flex flex-col mt-5 text-neutral-700 dark:text-neutral-300 text-sm">
-          <span>
-            Discover the most outstanding articles on all topics of life. Write
-            your stories and share them
-          </span>
-
+          <span>Your One-Stop Shop for Top-Tier Skills & Services!</span>
           <div className="flex justify-between items-center mt-4">
-            <SocialsList itemClass="w-9 h-9 flex items-center justify-center rounded-full bg-neutral-100 text-xl dark:bg-neutral-800 dark:text-neutral-300" />
-            <span className="block">
-              <SwitchDarkMode className="bg-neutral-100 dark:bg-neutral-800" />
-            </span>
+            <SwitchDarkMode className="bg-neutral-100 dark:bg-neutral-800" />
           </div>
         </div>
         <span className="absolute right-2 top-2 p-1">
           <ButtonClose onClick={onClickClose} />
         </span>
       </div>
-      <ul className="flex flex-col py-6 px-2 space-y-1">
-        {data.map(_renderItem)}
-      </ul>
-      <div className="flex items-center justify-between py-6 px-5">
-        <a
-          className="inline-block"
-          href="https://themeforest.net/item/chisfis-online-booking-react-template/33515927"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <ButtonPrimary>Get Template</ButtonPrimary>
-        </a>
-
-        <LangDropdown panelClassName="z-10 w-screen max-w-[280px] px-4 mb-3 -right-3 bottom-full sm:px-0" />
-      </div>
+      <ul className="flex flex-col py-6 px-2 space-y-1">{navigation.map(renderItem)}</ul>
     </div>
   );
 };

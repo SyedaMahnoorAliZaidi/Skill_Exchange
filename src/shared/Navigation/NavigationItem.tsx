@@ -6,7 +6,7 @@ import NcImage from "shared/NcImage/NcImage";
 
 // <--- NavItemType --->
 export interface MegamenuItem {
-  id: string;
+   id: string;
   image: string;
   title: string;
   items: NavItemType[];

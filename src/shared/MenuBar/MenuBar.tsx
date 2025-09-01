@@ -7,7 +7,7 @@ export interface MenuBarProps {
   className?: string;
   iconClassName?: string;
 }
-const MenuBar: React.FC<MenuBarProps> = ({
+const   MenuBar: React.FC<MenuBarProps> = ({
   className = "p-2.5 rounded-lg text-neutral-700 dark:text-neutral-300",
   iconClassName = "h-7 w-7",
 }) => {
@@ -24,6 +24,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
 
   const renderContent = () => {
     return (
+      
       <Transition appear show={isVisable} as={Fragment}>
         <Dialog
           as="div"
@@ -69,6 +70,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
         onClick={handleOpenMenu}
         className={`focus:outline-none flex items-center justify-center ${className}`}
       >
+        
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className={iconClassName}
@@ -84,6 +86,7 @@ const MenuBar: React.FC<MenuBarProps> = ({
       </button>
 
       {renderContent()}
+      
     </>
   );
 };

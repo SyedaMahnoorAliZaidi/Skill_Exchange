@@ -1,7 +1,8 @@
-import Logo from "shared/Logo/Logo";
-import SocialsList1 from "shared/SocialsList1/SocialsList1";
+import Logo from "images/dummy images/TaskEase logo.jpg";
+
 import { CustomLink } from "data/types";
 import React from "react";
+import { Link } from "react-router-dom";
 
 export interface WidgetFooterMenu {
   id: string;
@@ -11,47 +12,52 @@ export interface WidgetFooterMenu {
 
 const widgetMenus: WidgetFooterMenu[] = [
   {
-    id: "5",
-    title: "Getting started",
-    menus: [
-      { href: "#", label: "Installation" },
-      { href: "#", label: "Release Notes" },
-      { href: "#", label: "Upgrade Guide" },
-      { href: "#", label: "Browser Support" },
-      { href: "#", label: "Editor Support" },
-    ],
-  },
-  {
     id: "1",
-    title: "Explore",
+    title: "Services",
     menus: [
-      { href: "#", label: "Design features" },
-      { href: "#", label: "Prototyping" },
-      { href: "#", label: "Design systems" },
-      { href: "#", label: "Pricing" },
-      { href: "#", label: "Security" },
+      { href: "/stitching", label: "Stitching & Tailoring" },
+      { href: "/plumbing", label: "Plumbing Services" },
+      { href: "/electrical", label: "Electrical Work" },
+      { href: "/carpentry", label: "Carpentry & Woodwork" },
+      { href: "/cleaning", label: "Home Cleaning" },
+      { href: "/gardening", label: "Gardening & Landscaping" },
+      { href: "/painting", label: "Painting Services" },
+      { href: "/moving", label: "Moving & Relocation" },
+      { href: "/repair", label: "Repair & Maintenance" },
+      { href: "/installation", label: "Installation Services" },
     ],
   },
   {
     id: "2",
-    title: "Resources",
+    title: "Company",
     menus: [
-      { href: "#", label: "Best practices" },
-      { href: "#", label: "Support" },
-      { href: "#", label: "Developers" },
-      { href: "#", label: "Learn design" },
-      { href: "#", label: "Releases" },
+      { href: "/about", label: "About Us" },
+      { href: "/contact", label: "Contact Us" },
+      { href: "/faq", label: "FAQ" },
+      { href: "/signup", label: "Join as Expert" },
+      { href: "/login", label: "Login" },
+    ],
+  },
+  {
+    id: "3",
+    title: "Support",
+    menus: [
+      { href: "/contact", label: "Customer Support" },
+      { href: "/faq", label: "Help Center" },
+      { href: "/about", label: "How It Works" },
+      { href: "/contact", label: "Report an Issue" },
+      { href: "/contact", label: "Feedback" },
     ],
   },
   {
     id: "4",
-    title: "Community",
+    title: "Legal",
     menus: [
-      { href: "#", label: "Discussion Forums" },
-      { href: "#", label: "Code of Conduct" },
-      { href: "#", label: "Community Resources" },
-      { href: "#", label: "Contributing" },
-      { href: "#", label: "Concurrent Mode" },
+      { href: "/terms-of-service", label: "Terms of Service" },
+      { href: "/privacy-policy", label: "Privacy Policy" },
+      { href: "/cookie-policy", label: "Cookie Policy" },
+      { href: "/refund-policy", label: "Refund Policy" },
+      { href: "/safety-guidelines", label: "Safety Guidelines" },
     ],
   },
 ];
@@ -66,13 +72,12 @@ const Footer: React.FC = () => {
         <ul className="mt-5 space-y-4">
           {menu.menus.map((item, index) => (
             <li key={index}>
-              <a
-                key={index}
-                className="text-neutral-6000 dark:text-neutral-300 hover:text-black dark:hover:text-white"
-                href={item.href}
+              <Link
+                to={item.href}
+                className="text-neutral-6000 dark:text-neutral-300 hover:text-black dark:hover:text-white transition-colors"
               >
                 {item.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -81,19 +86,19 @@ const Footer: React.FC = () => {
   };
 
   return (
+    <>
     <div className="nc-Footer relative py-24 lg:py-28 border-t border-neutral-200 dark:border-neutral-700">
       <div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 md:grid-cols-4 lg:grid-cols-5 lg:gap-x-10 ">
         <div className="grid grid-cols-4 gap-5 col-span-2 md:col-span-4 lg:md:col-span-1 lg:flex lg:flex-col">
           <div className="col-span-2 md:col-span-1">
-            <Logo />
+          <img src={Logo} alt="TaskEase logo" className="w-32 h-auto" />
           </div>
-          <div className="col-span-2 flex items-center md:col-span-3">
-            <SocialsList1 className="flex items-center space-x-3 lg:space-x-0 lg:flex-col lg:space-y-2.5 lg:items-start" />
-          </div>
+         
         </div>
         {widgetMenus.map(renderWidgetMenuItem)}
       </div>
     </div>
+    </>
   );
 };
 

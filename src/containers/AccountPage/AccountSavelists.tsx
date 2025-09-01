@@ -10,6 +10,8 @@ import {
 import React, { Fragment, useState } from "react";
 import ButtonSecondary from "shared/Button/ButtonSecondary";
 import CommonLayout from "./CommonLayout";
+import AdminHeader from "components/Header/AdminHeader";
+import Header3 from "components/Header/Header3";
 
 const AccountSavelists = () => {
   let [categories] = useState(["Stays", "Experiences", "Cars"]);
@@ -17,9 +19,9 @@ const AccountSavelists = () => {
   const renderSection1 = () => {
     return (
       <div className="space-y-6 sm:space-y-8">
-        <div>
-          <h2 className="text-3xl font-semibold">Save lists</h2>
-        </div>
+          {/* <div>
+            <h2 className="text-3xl font-semibold">Save lists</h2>
+          </div> */}
         <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
 
         <div>
@@ -83,6 +85,8 @@ const AccountSavelists = () => {
 
   return (
     <div>
+      <Header3 />
+      <AdminHeader />
       <CommonLayout>{renderSection1()}</CommonLayout>
     </div>
   );

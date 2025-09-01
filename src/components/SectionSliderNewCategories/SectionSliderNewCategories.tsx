@@ -24,62 +24,53 @@ const DEMO_CATS: TaxonomyType[] = [
   {
     id: "1",
     href: "/listing-stay",
-    name: "Nature House",
+    name: "TV Mounting",
     taxonomy: "category",
-    count: 17288,
+    count: 35,
     thumbnail:
-      "https://images.pexels.com/photos/2581922/pexels-photo-2581922.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
+      "https://images.pexels.com/photos/276528/pexels-photo-276528.jpeg?auto=compress&fit=crop&w=400&q=80",
   },
   {
     id: "2",
     href: "/listing-stay",
-    name: "Wooden house",
+    name: "Light Fixture Setup",
     taxonomy: "category",
-    count: 2118,
+    count: 28,
     thumbnail:
-      "https://images.pexels.com/photos/2351649/pexels-photo-2351649.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+      "https://images.pexels.com/photos/279607/pexels-photo-279607.jpeg?auto=compress&fit=crop&w=400&q=80",
   },
   {
     id: "3",
     href: "/listing-stay",
-    name: "Houseboat",
+    name: "Curtain Rod Fixing",
     taxonomy: "category",
-    count: 36612,
+    count: 22,
     thumbnail:
-      "https://images.pexels.com/photos/962464/pexels-photo-962464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+      "https://images.pexels.com/photos/271816/pexels-photo-271816.jpeg?auto=compress&fit=crop&w=400&q=80",
   },
   {
     id: "4",
     href: "/listing-stay",
-    name: "Farm House",
+    name: "Fan Installation",
     taxonomy: "category",
-    count: 188288,
+    count: 18,
     thumbnail:
-      "https://images.pexels.com/photos/248837/pexels-photo-248837.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+      "https://images.pexels.com/photos/276528/pexels-photo-276528.jpeg?auto=compress&fit=crop&w=400&q=80",
   },
   {
     id: "5",
     href: "/listing-stay",
-    name: "Dome House",
+    name: "Wi-Fi Router Setup",
     taxonomy: "category",
-    count: 188288,
+    count: 15,
     thumbnail:
-      "https://images.pexels.com/photos/3613236/pexels-photo-3613236.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  },
-  {
-    id: "6",
-    href: "/listing-stay",
-    name: "Dome House",
-    taxonomy: "category",
-    count: 188288,
-    thumbnail:
-      "https://images.pexels.com/photos/3613236/pexels-photo-3613236.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1054397/pexels-photo-1054397.jpeg?auto=compress&fit=crop&w=400&q=80",
   },
 ];
 
 const SectionSliderNewCategories: FC<SectionSliderNewCategoriesProps> = ({
-  heading = "Heading of sections",
-  subHeading = "Descriptions for sections",
+  heading = "Specialized Home Installations",
+  subHeading = "Discover more installation and setup services for your home.",
   className = "",
   itemClassName = "",
   categories = DEMO_CATS,

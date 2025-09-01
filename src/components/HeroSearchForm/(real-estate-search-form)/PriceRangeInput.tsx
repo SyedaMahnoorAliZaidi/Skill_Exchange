@@ -6,15 +6,30 @@ import { CurrencyDollarIcon } from "@heroicons/react/24/outline";
 import convertNumbThousand from "utils/convertNumbThousand";
 
 export interface PriceRangeInputProps {
-  onChange?: (data: any) => void;
-  fieldClassName?: string;
+  value?: [number, number];
+  onChange?: (value: [number, number]) => void;
+  className?: string;
 }
 
 const PriceRangeInput: FC<PriceRangeInputProps> = ({
+  value,
   onChange,
-  fieldClassName = "[ nc-hero-field-padding ]",
+  className = "",
 }) => {
+  const [range, setRange] = React.useState<[number, number]>(value || [0, 0]);
+
+  React.useEffect(() => {
+    if (value) setRange(value);
+  }, [value]);
+
   const [rangePrices, setRangePrices] = useState([100000, 4000000]);
+
+  const handleChange = (newRange: number[] | [number, number]) => {
+    if (Array.isArray(newRange) && newRange.length === 2) {
+      setRange([newRange[0], newRange[1]]);
+      onChange && onChange([newRange[0], newRange[1]]);
+    }
+  };
 
   return (
     <Popover className="flex relative flex-[1.3]">
@@ -26,7 +41,7 @@ const PriceRangeInput: FC<PriceRangeInputProps> = ({
             }`}
           >
             <Popover.Button
-              className={`flex-1 flex text-left items-center focus:outline-none ${fieldClassName} space-x-3 `}
+              className={`flex-1 flex text-left items-center focus:outline-none ${className} space-x-3 `}
               onClickCapture={() => document.querySelector("html")?.click()}
             >
               <div className="text-neutral-300 dark:text-neutral-400">
@@ -75,7 +90,7 @@ const PriceRangeInput: FC<PriceRangeInputProps> = ({
                     defaultValue={[rangePrices[0], rangePrices[1]]}
                     allowCross={false}
                     step={1000}
-                    onChange={(e) => setRangePrices(e as number[])}
+                    onChange={(e) => handleChange(e as number[])}
                   />
                 </div>
 
